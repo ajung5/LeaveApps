@@ -199,6 +199,31 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 /* Struktur bagian VII-VIII: baris keputusan penuh; kolom nama pejabat tetap 52% di kanan. */
 .form-page.word-cuti-form.reference-v111 .approval-table{width:100%;margin-left:0;table-layout:fixed}
 
+
+/* v1.0.16: Explicit table width guides for Dompdf.
+   Dompdf's fixed table layout may divide columns equally, ignoring colgroup and widths.
+   Switch ONLY form tables to auto layout and anchor each column with a zero-height
+   first row of explicitly sized cells before the colspan heading.
+   Printable inner page width = 160mm (210 - left 30 - right 20). */
+.form-page.word-cuti-form .word-table,
+.form-page.word-cuti-form .approval-table,
+.form-page.word-cuti-form.reference-v111 .approval-table{
+    table-layout:auto!important;
+}
+.form-page.word-cuti-form .word-column-guide{height:0!important;max-height:0!important;line-height:0!important;font-size:0!important}
+.form-page.word-cuti-form .word-column-guide td,
+.form-page.word-cuti-form.density-2 .word-column-guide td,
+.form-page.word-cuti-form.density-3 .word-column-guide td,
+.form-page.word-cuti-form.density-4 .word-column-guide td,
+.form-page.word-cuti-form.density-5 .word-column-guide td,
+.form-page.word-cuti-form.density-6 .word-column-guide td,
+.form-page.word-cuti-form.density-7 .word-column-guide td{
+  height:0!important;min-height:0!important;max-height:0!important;
+  padding:0!important;border:0!important;
+  font-size:0!important;line-height:0!important;
+  overflow:hidden!important;
+}
+
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];

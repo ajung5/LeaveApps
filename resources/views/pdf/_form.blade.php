@@ -17,7 +17,8 @@
     {{-- I. Mengikuti empat kolom dan sel gabungan pada dokumen Word. --}}
     <table class="form-table tight word-table word-employee">
         <colgroup><col style="width:16%"><col style="width:36%"><col style="width:17%"><col style="width:31%"></colgroup>
-        <tr><td colspan="4" class="section-title">I. DATA PEGAWAI****</td></tr>
+            <tr class="word-column-guide" aria-hidden="true"><td width="16%" style="width:25.6mm"></td><td width="36%" style="width:57.6mm"></td><td width="17%" style="width:27.2mm"></td><td width="31%" style="width:49.6mm"></td></tr>
+<tr><td colspan="4" class="section-title">I. DATA PEGAWAI****</td></tr>
         <tr><td>Nama</td><td>{{ $employee['name'] }}</td><td>NIP</td><td>{{ $employee['nip'] }}</td></tr>
         <tr><td>Jabatan</td><td>{{ $employee['position'] }}</td><td>Masa Kerja</td><td>{{ $workAge ? $workAge->y.' TAHUN '.$workAge->m.' BULAN' : 'Belum tercatat' }}</td></tr>
         <tr><td>Unit Kerja</td><td colspan="3">{{ $employee['unit'] }}</td></tr>
@@ -25,7 +26,8 @@
 
     <table class="form-table tight word-table word-types">
         <colgroup><col style="width:35%"><col style="width:14%"><col style="width:36%"><col style="width:15%"></colgroup>
-        <tr><td colspan="4" class="section-title">II. JENIS CUTI YANG DIAMBIL****</td></tr>
+            <tr class="word-column-guide" aria-hidden="true"><td width="35%" style="width:56mm"></td><td width="14%" style="width:22.4mm"></td><td width="36%" style="width:57.6mm"></td><td width="15%" style="width:24mm"></td></tr>
+<tr><td colspan="4" class="section-title">II. JENIS CUTI YANG DIAMBIL****</td></tr>
         @php
             $choices = [
                 ['TAHUNAN', '1. Cuti Tahunan', 'BESAR', '2. Cuti Besar'],
@@ -50,7 +52,8 @@
 
     <table class="form-table tight word-table word-duration">
         <colgroup><col style="width:21%"><col style="width:19%"><col style="width:16%"><col style="width:19%"><col style="width:6%"><col style="width:19%"></colgroup>
-        <tr><td colspan="6" class="section-title">IV. LAMANYA CUTI****</td></tr>
+            <tr class="word-column-guide" aria-hidden="true"><td width="21%" style="width:33.6mm"></td><td width="19%" style="width:30.4mm"></td><td width="16%" style="width:25.6mm"></td><td width="19%" style="width:30.4mm"></td><td width="6%" style="width:9.6mm"></td><td width="19%" style="width:30.4mm"></td></tr>
+<tr><td colspan="6" class="section-title">IV. LAMANYA CUTI****</td></tr>
         <tr>
             <td>Selama :</td>
             <td class="center"><span class="word-subline">(hari/bulan/tahun)</span><br>{{ $leave->duration_days }} Hari</td>
@@ -64,7 +67,8 @@
     {{-- V. Catatan saldo N-2/N-1/N kiri; daftar jenis cuti lainnya kanan. --}}
     <table class="form-table tight word-table word-history">
         <colgroup><col style="width:12%"><col style="width:10%"><col style="width:18%"><col style="width:50%"><col style="width:10%"></colgroup>
-        <tr><td colspan="5" class="section-title">V. CATATAN CUTI***</td></tr>
+            <tr class="word-column-guide" aria-hidden="true"><td width="12%" style="width:19.2mm"></td><td width="10%" style="width:16mm"></td><td width="18%" style="width:28.8mm"></td><td width="50%" style="width:80mm"></td><td width="10%" style="width:16mm"></td></tr>
+<tr><td colspan="5" class="section-title">V. CATATAN CUTI***</td></tr>
         <tr><td colspan="3">1. CUTI TAHUNAN</td><td colspan="2">2. CUTI BESAR</td></tr>
         <tr><td>Tahun</td><td>Sisa</td><td>Keterangan</td><td colspan="2">3. CUTI SAKIT</td></tr>
         <tr><td>N-2</td><td>{{ $balanceYears[$leave->start_date->year-2] ?? '' }}</td><td></td><td colspan="2">4. CUTI BERSALIN</td></tr>
@@ -75,7 +79,8 @@
     {{-- VI. Kolom alamat 48%; 52% kanan adalah area tanda tangan pemohon. --}}
     <table class="form-table tight word-table word-address">
         <colgroup><col style="width:48%"><col style="width:18%"><col style="width:34%"></colgroup>
-        <tr><td colspan="3" class="section-title">VI. ALAMAT SELAMA MENJALANKAN CUTI****</td></tr>
+            <tr class="word-column-guide" aria-hidden="true"><td width="48%" style="width:76.8mm"></td><td width="18%" style="width:28.8mm"></td><td width="34%" style="width:54.4mm"></td></tr>
+<tr><td colspan="3" class="section-title">VI. ALAMAT SELAMA MENJALANKAN CUTI****</td></tr>
         <tr><td></td><td>TELP</td><td>{{ $leave->contact_phone }}</td></tr>
         <tr>
             <td class="word-address-text">{{ $leave->leave_address }}</td>
@@ -92,7 +97,8 @@
          bagian tanda tangan pejabat berada di kanan, sejajar dengan pemohon. --}}
     <table class="form-table tight approval-table word-table word-decision" data-word-section="VII">
         <colgroup><col style="width:14.5%"><col style="width:14.5%"><col style="width:19%"><col style="width:52%"></colgroup>
-        <tr><td colspan="4" class="section-title">VII. PERTIMBANGAN ATASAN LANGSUNG**</td></tr>
+            <tr class="word-column-guide" aria-hidden="true"><td width="14.5%" style="width:23.2mm"></td><td width="14.5%" style="width:23.2mm"></td><td width="19%" style="width:30.4mm"></td><td width="52%" style="width:83.2mm"></td></tr>
+<tr><td colspan="4" class="section-title">VII. PERTIMBANGAN ATASAN LANGSUNG**</td></tr>
         <tr>
             <td class="word-decision-choice">DISETUJUI**{{ $sup?->decision === 'approved' ? ' (X)' : '' }}</td>
             <td class="word-decision-choice">PERUBAHAN**{{ $sup?->decision === 'change' ? ' (X)' : '' }}</td>
@@ -105,7 +111,8 @@
 
     <table class="form-table tight approval-table word-table word-decision" data-word-section="VIII">
         <colgroup><col style="width:14.5%"><col style="width:14.5%"><col style="width:19%"><col style="width:52%"></colgroup>
-        <tr><td colspan="4" class="section-title">VIII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI****</td></tr>
+            <tr class="word-column-guide" aria-hidden="true"><td width="14.5%" style="width:23.2mm"></td><td width="14.5%" style="width:23.2mm"></td><td width="19%" style="width:30.4mm"></td><td width="52%" style="width:83.2mm"></td></tr>
+<tr><td colspan="4" class="section-title">VIII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI****</td></tr>
         <tr>
             <td class="word-decision-choice">DISETUJUI**{{ $authority?->decision === 'approved' ? ' (X)' : '' }}</td>
             <td class="word-decision-choice">PERUBAHAN**{{ $authority?->decision === 'change' ? ' (X)' : '' }}</td>
