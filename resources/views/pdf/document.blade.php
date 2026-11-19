@@ -19,11 +19,12 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .form-page .form-table.tight td{padding:.4mm .65mm;line-height:1.0}
 .form-page .form-table .section-title{padding:.4mm .7mm}
 .form-page .sign-space{height:7mm}.form-page .address-cell{height:10mm}.form-page .signature-cell{height:15mm}
-.form-page .approval-table{width:47%;margin-left:53%;table-layout:fixed;page-break-inside:avoid}
+.form-page .approval-layout{width:100%;table-layout:fixed}.form-page .approval-layout td{border:none;padding:0;vertical-align:top}
+.form-page .approval-table{width:100%;table-layout:fixed;page-break-inside:avoid}
 .form-page .approval-table .section-title{font-size:10pt;line-height:1.0;padding:.5mm .6mm}
 .form-page .approval-table .approval-choice{font-size:9pt;line-height:1.0;padding:.4mm .5mm;white-space:normal}
 .form-page .approval-table .approval-signature{font-size:9pt;line-height:1.0;height:12mm;text-align:center;white-space:normal}
-.form-page .approval-table .approval-signature .sign-space{height:4mm}
+.form-page .approval-table .approval-signature .sign-space{height:7mm}
 .checkbox{display:inline-block;border:.8px solid #111;width:2.4mm;height:2.4mm;text-align:center;line-height:2.4mm;font-size:7pt}
 .signature-name{font-weight:bold;text-decoration:underline}
 .docid{font-size:7pt;color:#555;text-align:right;margin-top:1mm}
@@ -36,24 +37,25 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .letterhead-text .addr{font-size:9pt;line-height:1.0}
 .letter-title{font-size:12pt;font-weight:bold;text-decoration:underline;text-align:center}
 .letter-number{font-size:12pt;text-align:center;margin-top:1mm}
+.letter-info{table-layout:auto;width:88%;border-collapse:collapse}
 .letter-info td{font-size:12pt;padding:.7mm .8mm;line-height:1.15}
-.body-letter{font-size:12pt;line-height:1.15}
-.body-letter p{margin-bottom:4mm}
+.letter-info .label{width:33mm;padding-right:.3mm}
+.letter-info .sep{width:4.5mm;text-align:center;padding-left:0;padding-right:0}
+.letter-info .value{padding-left:.35mm}
+.body-letter{font-size:12pt;line-height:1.15;text-align:justify}
+.body-letter p{margin-bottom:4mm;text-align:justify}
 .body-letter ol{margin:0 0 4mm 6mm;padding-left:5mm}
-.body-letter li{padding-left:1mm}
+.body-letter li{padding-left:1mm;text-align:justify}
 .signature-block{width:48%;margin-left:52%;font-size:12pt;line-height:1.15}
 .sig-height{height:25mm}
 .permit-title-area{margin:0 0 8mm}
 .text-indent{text-indent:6mm}
-.application-page .application-title{margin:8mm 0 10mm!important}
+.permission-page .letter-info{margin-left:1mm}
+.application-page .application-title{margin:8mm 0 10mm!important;text-decoration:none}
 .application-page .application-body{font-size:12pt!important;line-height:1.15!important}
+.application-page .letter-info{margin-left:12mm;width:84%}
 .application-page .application-signature{margin-top:16mm!important}
 .application-page .application-docid{margin-top:7mm!important}
-/* Jarak label, titik dua, dan nilai identitas surat dinas. */
-.letter-info{table-layout:fixed;width:100%}
-.letter-info td:first-child{width:34mm}
-.letter-info td:first-child + td{width:5mm}
-
 /* Tingkat kepadatan: margin kertas tidak pernah dikurangi. */
 .form-page.density-1 .form-table.tight td{padding:.25mm .5mm;font-size:11.5pt}
 .form-page.density-1 .form-table .section-title{padding:.3mm .5mm;font-size:11.5pt}
@@ -73,11 +75,8 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 /* Kop: proporsi 12:16 = 3:4; kedua baris memakai keluarga Bookman. */
 .letterhead-text .gov{font-size:12pt;font-weight:normal;line-height:1.0}
 .letterhead-text .agency{font-size:16pt;font-weight:bold;line-height:1.0}
-.form-page .approval-table{width:47%;margin-left:53%;table-layout:fixed;page-break-inside:avoid}
-
-/* Adaptasi khusus formulir tabel untuk mesin Dompdf.
- * Margin A4 resmi tidak diubah, seluruh bidang tetap tercetak.
- * Ukuran badan surat izin/permohonan tetap 12 pt. */
+.form-page .approval-table{width:100%;table-layout:fixed;page-break-inside:avoid}
+/* Adaptasi khusus formulir tabel untuk mesin Dompdf. */
 .form-page.density-3 .form-table.tight td{padding:.15mm .35mm;font-size:9.75pt;line-height:1.0}
 .form-page.density-3 .form-table .section-title{padding:.18mm .35mm;font-size:9.75pt;line-height:1.0}
 .form-page.density-4 .form-table.tight td{padding:.10mm .30mm;font-size:9.1pt;line-height:1.0}
@@ -92,7 +91,7 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .form-page.density-3 .signature-cell,.form-page.density-4 .signature-cell,.form-page.density-5 .signature-cell{height:8mm}
 .form-page.density-3 .approval-table .approval-choice,.form-page.density-4 .approval-table .approval-choice,.form-page.density-5 .approval-table .approval-choice{font-size:8pt;line-height:1.0;padding:.15mm .25mm}
 .form-page.density-3 .approval-table .approval-signature,.form-page.density-4 .approval-table .approval-signature,.form-page.density-5 .approval-table .approval-signature{font-size:8pt;line-height:1.0;padding:.15mm .25mm;height:9mm}
-.form-page.density-3 .approval-table .approval-signature .sign-space,.form-page.density-4 .approval-table .approval-signature .sign-space,.form-page.density-5 .approval-table .approval-signature .sign-space{height:2mm}
+.form-page.density-3 .approval-table .approval-signature .sign-space,.form-page.density-4 .approval-table .approval-signature .sign-space,.form-page.density-5 .approval-table .approval-signature .sign-space{height:3mm}
 .permission-page.density-3 .body-letter p,.application-page.density-3 .body-letter p{margin-bottom:1.5mm}
 .permission-page.density-3 .permit-title-area{margin:0 0 4mm}
 .permission-page.density-3 .letterhead{margin-bottom:6mm;min-height:26mm}

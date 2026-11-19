@@ -1,22 +1,129 @@
 @extends('layouts.app')
-@section('title',$leave?'Perbaiki Permohonan':'Ajukan Cuti')
-@section('breadcrumb','Pengajuan / Formulir')
+@section('title', $leave ? 'Perbaiki Permohonan' : 'Ajukan Cuti')
+@section('breadcrumb', 'Pengajuan / Formulir')
 @section('content')
-<div class="page-header"><div><div class="eyebrow">LEAVE REQUEST / SINGLE PAGE</div><h1>{{ $leave?'Perbaiki Permohonan Cuti':'Formulir Permohonan Cuti' }}</h1><p class="muted">Seluruh isian dalam satu halaman. Identitas pegawai terisi otomatis.</p></div><a class="btn outline" href="{{ route('dashboard') }}">Kembali</a></div>
-@if($leave && $leave->revision_notes)<div class="alert danger"><strong>Catatan perbaikan:</strong> {{ $leave->revision_notes }}</div>@endif
-<form method="POST" enctype="multipart/form-data" action="{{ $leave?route('leaves.update',$leave):route('leaves.store') }}">
-@csrf @if($leave) @method('PUT') @endif
-<div class="panel form-section"><div class="section-heading"><span class="section-number">01</span><div><h2>Identitas Pegawai</h2><p>Informasi bersumber dari data master pegawai.</p></div></div>
-<div class="form-grid three"><div class="read-field"><span>Nama Pegawai</span><strong>{{ $employee->full_name }}</strong></div><div class="read-field"><span>NIP</span><strong>{{ $employee->nip }}</strong></div><div class="read-field"><span>Jabatan</span><strong>{{ $employee->position }}</strong></div><div class="read-field"><span>Pangkat / Golongan</span><strong>{{ $employee->rank ?: '—' }} / {{ $employee->grade ?: '—' }}</strong></div><div class="read-field"><span>Unit Kerja</span><strong>{{ $employee->unit?->name ?: '—' }}</strong></div><div class="read-field"><span>Atasan Langsung</span><strong>{{ $employee->supervisor_name ?: 'Belum diatur Admin' }}</strong></div></div></div>
-<div class="panel form-section"><div class="section-heading"><span class="section-number">02</span><div><h2>Rincian Permohonan</h2><p>Pilih jenis dan periode cuti, kemudian lengkapi alasan.</p></div></div>
-<div class="form-grid two"><label>Jenis Cuti <span class="required">*</span><select name="leave_type_id" id="leave_type_id" required><option value="">Pilih jenis cuti</option>@foreach($types as $type)<option data-count="{{ $type->count_mode }}" data-attachment="{{ $type->requires_attachment?1:0 }}" value="{{ $type->id }}" @selected(old('leave_type_id',$leave?->leave_type_id)===$type->id || (string)old('leave_type_id',$leave?->leave_type_id)===(string)$type->id)>{{ $type->name }} ({{ $type->count_mode==='working'?'hari kerja':'hari kalender' }})</option>@endforeach</select></label>
-<div class="form-grid two"><label>Tanggal Mulai <span class="required">*</span><input type="date" name="start_date" id="start_date" value="{{ old('start_date',$leave?->start_date?->format('Y-m-d')) }}" required></label><label>Tanggal Selesai <span class="required">*</span><input type="date" name="end_date" id="end_date" value="{{ old('end_date',$leave?->end_date?->format('Y-m-d')) }}" required></label></div></div>
-<div class="form-grid two"><label>Alasan Cuti <span class="required">*</span><textarea name="reason" rows="3" maxlength="350" required placeholder="Tuliskan alasan permohonan">{{ old('reason',$leave?->reason) }}</textarea></label><div class="duration-panel"><span>Estimasi Lamanya Cuti</span><strong id="duration-preview">— hari</strong><small>Perhitungan akhir dilakukan di server, termasuk kalender libur instansi.</small></div></div></div>
-<div class="panel form-section"><div class="section-heading"><span class="section-number">03</span><div><h2>Kontak & Lampiran</h2><p>Alamat dan kontak selama menjalankan cuti.</p></div></div>
-<div class="form-grid two"><label>Alamat Selama Cuti <span class="required">*</span><textarea name="leave_address" rows="3" maxlength="300" required>{{ old('leave_address',$leave?->leave_address ?: $employee->leave_address) }}</textarea></label><div class="stack"><label>Nomor Telepon / WhatsApp <span class="required">*</span><input type="tel" name="contact_phone" maxlength="25" required value="{{ old('contact_phone',$leave?->contact_phone ?: $employee->phone) }}"></label><label>Dokumen Pendukung (PDF/JPG/PNG, maks. 5 MB)<input type="file" name="attachment" accept=".pdf,.jpg,.jpeg,.png"></label><div class="muted small" id="attachment-hint">Lampiran wajib untuk jenis cuti tertentu.</div></div></div></div>
-<div class="form-actions"><div class="small muted">Dengan mengirim permohonan, Anda menyatakan data yang diisi benar. Persetujuan tetap melalui pejabat berwenang.</div><button class="btn primary" type="submit">{{ $leave?'Kirim Ulang Perbaikan':'Kirim Permohonan Cuti' }}</button></div>
-</form>
-<script>
-(function(){const s=document.getElementById('start_date'),e=document.getElementById('end_date'),t=document.getElementById('leave_type_id'),out=document.getElementById('duration-preview'),hint=document.getElementById('attachment-hint');function update(){const opt=t.selectedOptions[0];hint.textContent=opt?.dataset.attachment==='1'?'Lampiran WAJIB dilampirkan untuk jenis cuti ini.':'Lampiran opsional.';if(!s.value||!e.value||!opt?.value){out.textContent='— hari';return;}let start=new Date(s.value+'T12:00:00'),end=new Date(e.value+'T12:00:00'),days=0;if(start>end){out.textContent='Tanggal tidak valid';return;}while(start<=end&&days<3700){if(opt.dataset.count==='calendar'||(start.getDay()!==0&&start.getDay()!==6))days++;start.setDate(start.getDate()+1);}out.textContent=days+' hari*';}for(const el of [s,e,t])el.addEventListener('change',update);update();})();
-</script>
+    <div class="page-header">
+        <div>
+            <div class="eyebrow">LEAVE REQUEST / SINGLE PAGE</div>
+            <h1>{{ $leave ? 'Perbaiki Permohonan Cuti' : 'Formulir Permohonan Cuti' }}</h1>
+            <p class="muted">Seluruh isian dalam satu halaman. Identitas pegawai terisi otomatis.</p>
+        </div><a class="btn outline" href="{{ route('dashboard') }}">Kembali</a>
+    </div>
+    @if ($leave && $leave->revision_notes)
+        <div class="alert danger"><strong>Catatan perbaikan:</strong> {{ $leave->revision_notes }}</div>
+    @endif
+    <form method="POST" enctype="multipart/form-data"
+        action="{{ $leave ? route('leaves.update', $leave) : route('leaves.store') }}">
+        @csrf @if ($leave)
+            @method('PUT')
+        @endif
+        <div class="panel form-section">
+            <div class="section-heading"><span class="section-number">01</span>
+                <div>
+                    <h2>Identitas Pegawai</h2>
+                    <p>Informasi bersumber dari data master pegawai.</p>
+                </div>
+            </div>
+            <div class="form-grid three">
+                <div class="read-field"><span>Nama Pegawai</span><strong>{{ $employee->full_name }}</strong></div>
+                <div class="read-field"><span>NIP</span><strong>{{ $employee->nip }}</strong></div>
+                <div class="read-field"><span>Jabatan</span><strong>{{ $employee->position }}</strong></div>
+                <div class="read-field"><span>Pangkat / Golongan</span><strong>{{ $employee->rank ?: '—' }} /
+                        {{ $employee->grade ?: '—' }}</strong></div>
+                <div class="read-field"><span>Unit Kerja</span><strong>{{ $employee->unit?->name ?: '—' }}</strong></div>
+                <div class="read-field"><span>Atasan
+                        Langsung</span><strong>{{ $employee->supervisor_name ?: 'Belum diatur Admin' }}</strong></div>
+            </div>
+        </div>
+        <div class="panel form-section">
+            <div class="section-heading"><span class="section-number">02</span>
+                <div>
+                    <h2>Rincian Permohonan</h2>
+                    <p>Pilih jenis dan periode cuti, kemudian lengkapi alasan.</p>
+                </div>
+            </div>
+            <div class="form-grid two"><label>Jenis Cuti <span class="required">*</span><select name="leave_type_id"
+                        id="leave_type_id" required>
+                        <option value="">Pilih jenis cuti</option>
+                        @foreach ($types as $type)
+                            <option data-count="{{ $type->count_mode }}"
+                                data-attachment="{{ $type->requires_attachment ? 1 : 0 }}" value="{{ $type->id }}"
+                                @selected(old('leave_type_id', $leave?->leave_type_id) === $type->id || (string) old('leave_type_id', $leave?->leave_type_id) === (string) $type->id)>{{ $type->name }}
+                                ({{ $type->count_mode === 'working' ? 'hari kerja' : 'hari kalender' }})
+                            </option>
+                        @endforeach
+                    </select></label>
+                <div class="form-grid two"><label>Tanggal Mulai <span class="required">*</span><input type="date"
+                            name="start_date" id="start_date"
+                            value="{{ old('start_date', $leave?->start_date?->format('Y-m-d')) }}"
+                            required></label><label>Tanggal Selesai <span class="required">*</span><input type="date"
+                            name="end_date" id="end_date"
+                            value="{{ old('end_date', $leave?->end_date?->format('Y-m-d')) }}" required></label></div>
+            </div>
+            <div class="form-grid two"><label>Alasan Cuti <span class="required">*</span>
+                    <textarea name="reason" rows="3" maxlength="350" required placeholder="Tuliskan alasan permohonan">{{ old('reason', $leave?->reason) }}</textarea>
+                </label>
+                <div class="duration-panel"><span>Estimasi Lamanya Cuti</span><strong id="duration-preview">—
+                        hari</strong><small>Perhitungan akhir dilakukan di server, termasuk kalender libur instansi.</small>
+                </div>
+            </div>
+        </div>
+        <div class="panel form-section">
+            <div class="section-heading"><span class="section-number">03</span>
+                <div>
+                    <h2>Kontak & Lampiran</h2>
+                    <p>Alamat dan kontak selama menjalankan cuti.</p>
+                </div>
+            </div>
+            <div class="form-grid two"><label>Alamat Selama Cuti <span class="required">*</span>
+                    <textarea name="leave_address" rows="3" maxlength="300" required>{{ old('leave_address', $leave?->leave_address ?: $employee->leave_address) }}</textarea>
+                </label>
+                <div class="stack"><label>Nomor Telepon / WhatsApp <span class="required">*</span><input type="tel"
+                            name="contact_phone" maxlength="25" required
+                            value="{{ old('contact_phone', $leave?->contact_phone ?: $employee->phone) }}"></label><label>Dokumen
+                        Pendukung (PDF/JPG/PNG, maks. 5 MB)<input type="file" name="attachment"
+                            accept=".pdf,.jpg,.jpeg,.png"></label>
+                    <div class="muted small" id="attachment-hint">Lampiran wajib untuk jenis cuti tertentu.</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="small muted">Dengan mengirim permohonan, Anda menyatakan data yang diisi benar. Persetujuan tetap
+                melalui pejabat berwenang.</div><button class="btn primary"
+                type="submit">{{ $leave ? 'Kirim Ulang Perbaikan' : 'Kirim Permohonan Cuti' }}</button>
+        </div>
+    </form>
+    <script>
+        (function() {
+            const s = document.getElementById('start_date'),
+                e = document.getElementById('end_date'),
+                t = document.getElementById('leave_type_id'),
+                out = document.getElementById('duration-preview'),
+                hint = document.getElementById('attachment-hint');
+
+            function update() {
+                const opt = t.selectedOptions[0];
+                hint.textContent = opt?.dataset.attachment === '1' ?
+                    'Lampiran WAJIB dilampirkan untuk jenis cuti ini.' : 'Lampiran opsional.';
+                if (!s.value || !e.value || !opt?.value) {
+                    out.textContent = '— hari';
+                    return;
+                }
+                let start = new Date(s.value + 'T12:00:00'),
+                    end = new Date(e.value + 'T12:00:00'),
+                    days = 0;
+                if (start > end) {
+                    out.textContent = 'Tanggal tidak valid';
+                    return;
+                }
+                while (start <= end && days < 3700) {
+                    if (opt.dataset.count === 'calendar' || (start.getDay() !== 0 && start.getDay() !== 6)) days++;
+                    start.setDate(start.getDate() + 1);
+                }
+                out.textContent = days + ' hari*';
+            }
+            for (const el of [s, e, t]) el.addEventListener('change', update);
+            update();
+        })();
+    </script>
 @endsection

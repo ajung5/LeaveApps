@@ -3,7 +3,13 @@
 <div class="permit-title-area"><div class="letter-title">SURAT IZIN {{ mb_strtoupper($leave->type->name) }}</div><div class="letter-number">Nomor : {{ $leave->letter_number }}</div></div>
 <div class="body-letter">
 <p>Diberikan izin <strong>{{ $leave->type->name }}</strong> kepada pegawai:</p>
-<table class="letter-info"><tr><td width="24%">Nama</td><td width="3%">:</td><td>{{ $employee['name'] }}</td></tr><tr><td>NIP</td><td>:</td><td>{{ $employee['nip'] }}</td></tr><tr><td>Pangkat/Gol.</td><td>:</td><td>{{ $employee['rank'] }} / {{ $employee['grade'] }}</td></tr><tr><td>Jabatan</td><td>:</td><td>{{ $employee['position'] }}</td></tr><tr><td>Unit Kerja</td><td>:</td><td>{{ $employee['unit'] }}</td></tr></table>
+<table class="letter-info">
+<tr><td class="label">Nama</td><td class="sep">:</td><td class="value">{{ $employee['name'] }}</td></tr>
+<tr><td class="label">NIP</td><td class="sep">:</td><td class="value">{{ $employee['nip'] }}</td></tr>
+<tr><td class="label">Pangkat/Gol.</td><td class="sep">:</td><td class="value">{{ $employee['rank'] }} / {{ $employee['grade'] }}</td></tr>
+<tr><td class="label">Jabatan</td><td class="sep">:</td><td class="value">{{ $employee['position'] }}</td></tr>
+<tr><td class="label">Unit Kerja</td><td class="sep">:</td><td class="value">{{ $employee['unit'] }}</td></tr>
+</table>
 <div class="space4"></div>
 <p>Terhitung mulai tanggal <strong>{{ $leave->start_date->translatedFormat('d F Y') }}</strong> sampai dengan tanggal <strong>{{ $leave->end_date->translatedFormat('d F Y') }}</strong>, selama <strong>{{ $leave->duration_days }} hari</strong> ({{ $leave->type->count_mode==='working'?'hari kerja':'hari kalender' }}), untuk melaksanakan {{ $leave->type->name }} dengan ketentuan sebagai berikut:</p>
 <ol><li>Sebelum menjalankan cuti, pegawai wajib menyerahkan pekerjaan kepada atasan langsung atau pejabat yang ditunjuk.</li><li>Setelah selesai menjalankan cuti, pegawai wajib melapor kepada atasan langsung dan kembali bekerja sesuai ketentuan.</li></ol>
