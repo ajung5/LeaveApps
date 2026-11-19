@@ -49,7 +49,19 @@ class DocumentController extends Controller
             'authority_rank' => AppSetting::read('authority_rank'),
         ];
         $logo = base64_encode(file_get_contents(public_path('assets/img/lambang-subang.jpeg')));
-        $data = compact('leave', 'employee', 'settings', 'logo');
+        // Font Arial tidak didistribusikan bersama source code. Pada macOS
+        // font sistem dapat dipakai langsung; server lain dapat menyediakan
+        // file berlisensi pada storage/app/private/pdf-fonts/.
+        $pdfArialRegular = $pdfArialBold = null;
+        if (in_array($kind, ['permission', 'bundle'], true)) {
+            [$pdfArialRegular, $pdfArialBold] = $this->localArialFonts();
+            if (! $pdfArialRegular || ! $pdfArialBold) {
+                Log::warning('Font Arial untuk kop surat tidak ditemukan; PDF menggunakan fallback Helvetica.', [
+                    'leave_id' => $leave->getKey(),
+                ]);
+            }
+        }
+        $data = compact('leave', 'employee', 'settings', 'logo', 'pdfArialRegular', 'pdfArialBold');
 
         // Rendering tiap bagian secara independen memastikan bundle tidak
         // bisa dianggap benar bila salah satu surat meluber atau kosong.
@@ -94,11 +106,65 @@ class DocumentController extends Controller
         return $this->pdfResponse($bundlePdf, $kind, $leave, 3);
     }
 
+    /**
+     * Baca font Arial dari sistem / storage lokal yang sah tanpa menyalin
+     * berkas font ke dalam paket patch atau repository.
+     *
+     * @return array{0: ?string, 1: ?string}
+     */
+    private function localArialFonts(): array
+    {
+        $directories = [
+            storage_path('app/private/pdf-fonts'),
+            '/System/Library/Fonts/Supplemental',
+            '/Library/Fonts',
+        ];
+
+        foreach ($directories as $directory) {
+            foreach ([
+                ['Arial.ttf', 'Arial Bold.ttf'],
+                ['arial.ttf', 'arialbd.ttf'],
+                ['Arial.ttf', 'Arial-Bold.ttf'],
+            ] as [$regularFile, $boldFile]) {
+                $regular = $directory.DIRECTORY_SEPARATOR.$regularFile;
+                $bold = $directory.DIRECTORY_SEPARATOR.$boldFile;
+                if (is_readable($regular) && is_readable($bold)) {
+                    return [base64_encode(file_get_contents($regular)), base64_encode(file_get_contents($bold))];
+                }
+            }
+        }
+
+        return [null, null];
+    }
+
+    /**
+     * Dompdf membuat berkas metrik .ufm ketika font Arial lokal diregistrasi.
+     * Direktori cache harus ada dan dapat ditulis SEBELUM proses render.
+     */
+    private function ensurePdfFontCacheDirectory(string $directory): void
+    {
+        if (! is_dir($directory) && ! @mkdir($directory, 0775, true) && ! is_dir($directory)) {
+            throw new \RuntimeException('Direktori cache font PDF gagal dibuat: '.$directory);
+        }
+
+        if (! is_dir($directory) || ! is_writable($directory)) {
+            throw new \RuntimeException(
+                'Direktori cache font PDF tidak dapat ditulis: '.$directory
+                .'. Periksa ownership dan izin akses pengguna PHP.'
+            );
+        }
+    }
+
     private function renderPdf(array $data)
     {
+        $fontCache = storage_path('fonts');
+        $this->ensurePdfFontCacheDirectory($fontCache);
+
         $pdf = Pdf::loadView('pdf.document', $data)
             ->setPaper('a4', 'portrait')
-            ->setOption('isRemoteEnabled', false);
+            ->setOption('isRemoteEnabled', false)
+            ->setOption('fontDir', $fontCache)
+            ->setOption('fontCache', $fontCache);
         $pdf->render();
 
         return $pdf;

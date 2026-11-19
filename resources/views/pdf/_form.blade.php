@@ -20,8 +20,34 @@
 <div class="space3"></div>
 <table class="form-table tight"><tr><td class="section-title" colspan="2">VI. ALAMAT SELAMA MENJALANKAN CUTI</td></tr><tr><td width="53%"><strong>Alamat</strong><br>{{ $leave->leave_address }}<br><br>Telp: {{ $leave->contact_phone }}</td><td class="address-cell center">Hormat saya,<div class="sign-space"></div><span class="signature-name">{{ $employee['name'] }}</span><br>NIP. {{ $employee['nip'] }}</td></tr></table>
 <div class="space3"></div>
-<table class="form-table tight"><tr><td class="section-title" colspan="4">VII. PERTIMBANGAN ATASAN LANGSUNG</td></tr><tr>@foreach(['approved'=>'DISETUJUI','change'=>'PERUBAHAN','deferred'=>'DITANGGUHKAN','rejected'=>'TIDAK DISETUJUI'] as $k=>$v)<td width="25%" class="center">{{ $v }} <span class="checkbox">{{ $sup?->decision===$k?'X':'' }}</span></td>@endforeach</tr><tr><td colspan="4" class="signature-cell">{{ $employee['supervisor_position'] ?: 'ATASAN LANGSUNG' }}<div class="sign-space"></div><span class="signature-name">{{ $sup?->official_name ?: $employee['supervisor_name'] }}</span><br>NIP. {{ $sup?->official_nip ?: $employee['supervisor_nip'] }}</td></tr></table>
+@php
+    $approvalRows = [
+        ['approved' => 'DISETUJUI', 'change' => 'PERUBAHAN'],
+        ['deferred' => 'DITANGGUHKAN', 'rejected' => 'TIDAK DISETUJUI'],
+    ];
+@endphp
+<table class="form-table tight approval-table">
+    <tr><td class="section-title" colspan="2">VII. PERTIMBANGAN ATASAN LANGSUNG</td></tr>
+    @foreach($approvalRows as $choices)
+        <tr>
+            @foreach($choices as $key => $label)
+                <td width="50%" class="approval-choice">{{ $label }} <span class="checkbox">{{ $sup?->decision === $key ? 'X' : '' }}</span></td>
+            @endforeach
+        </tr>
+    @endforeach
+    <tr><td colspan="2" class="signature-cell approval-signature">{{ $employee['supervisor_position'] ?: 'ATASAN LANGSUNG' }}<div class="sign-space"></div><span class="signature-name">{{ $sup?->official_name ?: $employee['supervisor_name'] }}</span><br>NIP. {{ $sup?->official_nip ?: $employee['supervisor_nip'] }}</td></tr>
+</table>
 <div class="space3"></div>
-<table class="form-table tight"><tr><td class="section-title" colspan="4">VIII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI</td></tr><tr>@foreach(['approved'=>'DISETUJUI','change'=>'PERUBAHAN','deferred'=>'DITANGGUHKAN','rejected'=>'TIDAK DISETUJUI'] as $k=>$v)<td width="25%" class="center">{{ $v }} <span class="checkbox">{{ $authority?->decision===$k?'X':'' }}</span></td>@endforeach</tr><tr><td colspan="4" class="signature-cell">{{ $settings['authority_position'] }}<div class="sign-space"></div><span class="signature-name">{{ $authority?->official_name ?: $settings['authority_name'] }}</span><br>NIP. {{ $authority?->official_nip ?: $settings['authority_nip'] }}</td></tr></table>
+<table class="form-table tight approval-table">
+    <tr><td class="section-title" colspan="2">VIII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI</td></tr>
+    @foreach($approvalRows as $choices)
+        <tr>
+            @foreach($choices as $key => $label)
+                <td width="50%" class="approval-choice">{{ $label }} <span class="checkbox">{{ $authority?->decision === $key ? 'X' : '' }}</span></td>
+            @endforeach
+        </tr>
+    @endforeach
+    <tr><td colspan="2" class="signature-cell approval-signature">{{ $settings['authority_position'] }}<div class="sign-space"></div><span class="signature-name">{{ $authority?->official_name ?: $settings['authority_name'] }}</span><br>NIP. {{ $authority?->official_nip ?: $settings['authority_nip'] }}</td></tr>
+</table>
 <div class="docid">{{ $leave->request_number }} @if(!$isIssued) · DRAF — BELUM DITERBITKAN @endif</div>
 </div>
