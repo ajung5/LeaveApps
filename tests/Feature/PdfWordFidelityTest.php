@@ -11,7 +11,14 @@ class PdfWordFidelityTest extends TestCase
         $form = file_get_contents(resource_path('views/pdf/_form.blade.php'));
         $this->assertStringContainsString('data-reference-layout="Pratinjau_Formulir_Cuti_v1.0.11_A4"', $form);
         $this->assertStringContainsString('Yth. {{ $settings[\'authority_position\'] }}', $form);
-        $this->assertStringContainsString("{{ \$settings['institution_name'] }}", $form);
+        // v1.0.17: tujuan hanya satu jabatan; nama OPD tidak boleh terulang.
+        preg_match('/<table class="form-addressee">(.*?)<\/table>/s', $form, $found);
+        $this->assertNotEmpty($found[1] ?? null, 'Blok tujuan surat tidak ditemukan.');
+        $recipient = $found[1];
+        $this->assertSame(1, substr_count($recipient, "{{ \$settings['authority_position'] }}"));
+        $this->assertStringNotContainsString("{{ \$settings['institution_name'] }}", $recipient);
+        $this->assertStringContainsString('Kepada', $recipient);
+        $this->assertStringContainsString('TEMPAT', $recipient);
         $this->assertStringContainsString('III. ALASAN CUTI', $form);
         $this->assertStringContainsString('{{ $leave->reason }}', $form);
     }

@@ -224,6 +224,24 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
   overflow:hidden!important;
 }
 
+
+/* CUTI-PDF v1.0.17: exactly three blank line-heights for all signature specimens.
+ * Forms use the font-size of their current density; letters remain 12 pt.
+ * Keep this block after all density rules so a compact layout cannot erase
+ * the space reserved for handwritten signatures. */
+.form-page.word-cuti-form .word-applicant-sign .word-sign-space{
+    height:3.18em!important;
+    min-height:3.18em!important;
+}
+.form-page.word-cuti-form .word-decision td.word-decision-sign .word-sign-space{
+    height:3.15em!important;
+    min-height:3.15em!important;
+}
+.permission-page .signature-block .sig-height,
+.application-page .signature-block .sig-height{
+    height:3.45em!important;
+    min-height:3.45em!important;
+}
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];

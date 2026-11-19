@@ -6,7 +6,6 @@
             <td width="46%">
                 Kepada<br>
                 Yth. {{ $settings['authority_position'] }}<br>
-                {{ $settings['institution_name'] }}<br>
                 di<br>
                 TEMPAT
             </td>
