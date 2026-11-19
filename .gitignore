@@ -8,3 +8,8 @@
 /storage/framework/views/*
 /bootstrap/cache/*.php
 /.phpunit.cache
+
+# Backup/residual patch lokal (jangan ikut commit)
+*.bak_v*
+*.orig
+*.rej

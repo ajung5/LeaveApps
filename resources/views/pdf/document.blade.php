@@ -39,7 +39,7 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .letterhead{border-bottom:0;margin-bottom:8.5mm;padding-bottom:0;min-height:27mm}
 .permission-page .letterhead-rules{clear:both;padding-top:2.3mm}
 .permission-page .letterhead-rule-primary{border-top:3pt solid #111;height:0;line-height:0;font-size:0}
-.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;height:0;margin-top:.8mm;line-height:0;font-size:0}
+.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;height:0;margin-top:.6mm;line-height:0;font-size:0}
 .logo{float:left;width:18mm;height:20mm;object-fit:contain;margin:0 4mm 0 0}
 .letterhead-text{text-align:center}
 .letterhead-text .gov{font-size:12pt;font-weight:normal;line-height:1.0}

@@ -6,11 +6,11 @@ use Tests\TestCase;
 
 class PdfCellSpacingV126Test extends TestCase
 {
-    public function test_jarak_antar_garis_kop_adalah_delapan_per_sepuluh_milimeter(): void
+    public function test_jarak_antar_garis_kop_adalah_enam_per_sepuluh_milimeter(): void
     {
         $css = file_get_contents(resource_path('views/pdf/document.blade.php'));
         $this->assertStringContainsString(
-            '.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;height:0;margin-top:.8mm;',
+            '.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;height:0;margin-top:.6mm;',
             $css
         );
         $this->assertStringNotContainsString('margin-top:1.2mm;', $css);
