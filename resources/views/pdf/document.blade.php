@@ -265,11 +265,20 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
   font-size:9.5pt;
 }
 
-/* CUTI-PDF v1.0.21: nomor surat disiapkan untuk ditulis manual.
-   Judul tetap di tengah; baris Nomor mulai dari tepi kiri area isi. */
+/* CUTI-PDF v1.0.22: tempat nomor dipusatkan sebagai satu baris lengkap.
+   Label berada di kiri area kosong 84mm, seperti nomor surat telah diisi,
+   tetapi tanpa mencetak nomor atau garis. Judul tidak bergeser. */
 .permission-page .letter-number{
+    width:84mm!important;
+    margin:1mm auto 0!important;
+    padding:0!important;
     text-align:left!important;
-    padding-left:0!important;
+    white-space:nowrap;
+}
+.permission-page .letter-number .letter-number-placeholder{
+    display:inline-block;
+    width:63mm;
+    visibility:hidden;
 }
 /* Saldo N (tahun berjalan) dipusatkan, tahun N-1/N-2 tidak diubah. */
 .form-page.word-cuti-form .word-history .word-current-balance{

@@ -6,12 +6,23 @@ use Tests\TestCase;
 
 class PdfLayoutV121Test extends TestCase
 {
-    public function test_nomor_surat_izin_rata_kiri_dan_tetap_kosong(): void
+    public function test_nomor_surat_izin_memiliki_ruang_kosong_dan_bloknya_terpusat(): void
     {
         $css = file_get_contents(resource_path('views/pdf/document.blade.php'));
         $permission = file_get_contents(resource_path('views/pdf/_permission.blade.php'));
-        $this->assertStringContainsString('<div class="letter-number">Nomor :</div>', $permission);
-        $this->assertMatchesRegularExpression('/\.permission-page\s+\.letter-number\s*\{[^}]*text-align:left!important/s', $css);
+
+        // Posisi label di kiri blok yang berpusat; tempat nomor tetap kosong.
+        $this->assertStringContainsString(
+            '<div class="letter-number">Nomor : <span class="letter-number-placeholder" aria-hidden="true">&nbsp;</span></div>',
+            $permission
+        );
+        $this->assertMatchesRegularExpression(
+            '/\.permission-page\s+\.letter-number\s*\{[^}]*width:84mm!important;[^}]*margin:1mm auto 0!important;[^}]*text-align:left!important/s',
+            $css
+        );
+        $this->assertStringContainsString('width:63mm;', $css);
+        $this->assertStringContainsString('visibility:hidden;', $css);
+        $this->assertStringNotContainsString('{{ $leave->letter_number }}', $permission);
     }
 
     public function test_sisa_cuti_N_rata_tengah_dan_tahun_lain_tidak_berubah(): void
