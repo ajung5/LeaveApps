@@ -182,6 +182,23 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .form-page.word-cuti-form.density-6 .word-decision .word-sign-space,.form-page.word-cuti-form.density-7 .word-decision .word-sign-space{height:4mm}
 .form-page.word-cuti-form.density-6 .word-subline,.form-page.word-cuti-form.density-7 .word-subline{font-size:7.3pt}
 
+
+/* v1.0.14 - FORMULIR ACUAN Pratinjau_Formulir_Cuti_v1.0.11_A4
+ * Acuan diperoleh dari PDF asli: 1 halaman A4, kolom-kolom formulir selebar bidang 160mm,
+ * tulisan tabel 9.25pt, judul 11pt, tanda tangan pejabat di sisi kanan.
+ * Diterapkan pada density-2 sebagai standar, level 3-7 tetap untuk kasus data panjang.
+ */
+.form-page.word-cuti-form.reference-v111.density-2 .word-table{margin-bottom:1.7mm}
+.form-page.word-cuti-form.reference-v111.density-2 .word-table td{padding:.5mm .55mm;font-size:9.25pt;line-height:1.04}
+.form-page.word-cuti-form.reference-v111.density-2 .word-table .section-title{font-size:9.25pt;line-height:1.04}
+.form-page.word-cuti-form.reference-v111.density-2 .form-caption{font-size:11pt;font-weight:normal}
+.form-page.word-cuti-form.reference-v111.density-2 .word-decision td.word-decision-choice{font-size:8.4pt;line-height:1.05}
+.form-page.word-cuti-form.reference-v111.density-2 .word-applicant-sign{height:17mm}
+.form-page.word-cuti-form.reference-v111.density-2 .word-decision td.word-decision-sign{height:15mm;vertical-align:bottom}
+.form-page.word-cuti-form.reference-v111.density-2 .word-decision td.word-decision-position{height:5.5mm}
+/* Struktur bagian VII-VIII: baris keputusan penuh; kolom nama pejabat tetap 52% di kanan. */
+.form-page.word-cuti-form.reference-v111 .approval-table{width:100%;margin-left:0;table-layout:fixed}
+
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];

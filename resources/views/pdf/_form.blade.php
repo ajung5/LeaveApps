@@ -1,28 +1,12 @@
-<div class="page form-page word-cuti-form density-{{ $density['form'] ?? 0 }}">
+<div class="page form-page word-cuti-form reference-v111 density-{{ $density['form'] ?? 2 }}" data-reference-layout="Pratinjau_Formulir_Cuti_v1.0.11_A4">
     <div class="header-date">{{ $settings['institution_city'] }}, {{ $writtenDate->translatedFormat('d F Y') }}</div>
-    @php
-        // Format penerima sesuai Word: jabatan + wilayah, bukan mengulang nama Dinas.
-        $recipientPosition = mb_convert_case(
-            mb_strtolower(trim((string) ($settings['authority_position'] ?? ''))),
-            MB_CASE_TITLE,
-            'UTF-8'
-        );
-        $governmentArea = trim((string) preg_replace(
-            '/^\s*PEMERINTAH(?:\s+DAERAH)?\s*/iu',
-            '',
-            (string) ($settings['government_name'] ?? '')
-        ));
-        $recipientRegion = $governmentArea !== ''
-            ? mb_convert_case(mb_strtolower($governmentArea), MB_CASE_TITLE, 'UTF-8')
-            : 'Kabupaten '.($settings['institution_city'] ?? 'Subang');
-    @endphp
     <table class="form-addressee">
         <tr>
             <td width="54%"></td>
             <td width="46%">
                 Kepada<br>
-                Yth. {{ $recipientPosition }}<br>
-                {{ $recipientRegion }}<br>
+                Yth. {{ $settings['authority_position'] }}<br>
+                {{ $settings['institution_name'] }}<br>
                 di<br>
                 TEMPAT
             </td>

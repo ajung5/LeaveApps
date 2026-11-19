@@ -62,7 +62,8 @@ class DocumentController extends Controller
         // Rendering tiap bagian secara independen memastikan bundle tidak
         // bisa dianggap benar bila salah satu surat meluber atau kosong.
         $parts = $kind === 'bundle' ? ['form', 'permission', 'application'] : [$kind];
-        $density = ['form' => 0, 'permission' => 0, 'application' => 0];
+        // Formulir harus mengikuti ukuran/prororsi pratinjau v1.0.11 sejak render pertama.
+        $density = ['form' => 2, 'permission' => 0, 'application' => 0];
         // Formulir tabel boleh lebih rapat. Badan surat tetap 12 pt.
         $maxDensity = ['form' => 7, 'permission' => 3, 'application' => 3];
 
@@ -97,7 +98,12 @@ class DocumentController extends Controller
                 );
             }
             if ($kind !== 'bundle') {
-                return $this->pdfResponse($partPdf, $kind, $leave, 1);
+                $response = $this->pdfResponse($partPdf, $kind, $leave, 1);
+                if ($part === 'form') {
+                    $response->headers->set('X-Cuti-Form-Reference', 'v1.0.11-A4');
+                    $response->headers->set('X-Cuti-Form-Density', (string) $density['form']);
+                }
+                return $response;
             }
         }
 
