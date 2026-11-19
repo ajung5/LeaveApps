@@ -18,7 +18,7 @@ class PdfDoubleLetterheadV125Test extends TestCase
         $this->assertStringContainsString('.permission-page .letterhead-rules{clear:both;padding-top:2.3mm}', $css);
         $this->assertStringContainsString('.permission-page .letterhead-rule-primary{border-top:3pt solid #111;', $css);
         $this->assertStringContainsString('.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;', $css);
-        $this->assertStringContainsString('margin-top:1.2mm;', $css);
+        $this->assertStringContainsString('margin-top:.8mm;', $css);
     }
 
     public function test_nomor_surat_dan_jarak_tanda_tangan_tidak_berubah(): void

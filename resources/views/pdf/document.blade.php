@@ -39,7 +39,7 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .letterhead{border-bottom:0;margin-bottom:8.5mm;padding-bottom:0;min-height:27mm}
 .permission-page .letterhead-rules{clear:both;padding-top:2.3mm}
 .permission-page .letterhead-rule-primary{border-top:3pt solid #111;height:0;line-height:0;font-size:0}
-.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;height:0;margin-top:1.2mm;line-height:0;font-size:0}
+.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;height:0;margin-top:.8mm;line-height:0;font-size:0}
 .logo{float:left;width:18mm;height:20mm;object-fit:contain;margin:0 4mm 0 0}
 .letterhead-text{text-align:center}
 .letterhead-text .gov{font-size:12pt;font-weight:normal;line-height:1.0}
@@ -343,6 +343,30 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .permission-page .signature-block,
 .application-page .signature-block{
     page-break-inside:avoid;
+}
+
+/* CUTI-PDF v1.0.26: satu spasi ruang isi sel pada formulir halaman pertama.
+   Padding horizontal ~1 mm untuk teks 10 pt; vertikal ~0,6 mm.
+   Tidak mengubah lebar kolom 160 mm maupun ukuran font.
+   Jika konten panjang, Dompdf tetap boleh memakai density 3-7.
+   Baris .word-column-guide selalu padding:0!important (aturan sebelumnya). */
+.form-page.word-cuti-form.reference-v111.density-2 .word-table td{
+    padding:.6mm 1mm;
+}
+.form-page.word-cuti-form.reference-v111.density-3 .word-table td{
+    padding:.48mm .85mm;
+}
+.form-page.word-cuti-form.reference-v111.density-4 .word-table td{
+    padding:.36mm .7mm;
+}
+.form-page.word-cuti-form.reference-v111.density-5 .word-table td{
+    padding:.28mm .58mm;
+}
+.form-page.word-cuti-form.reference-v111.density-6 .word-table td{
+    padding:.23mm .48mm;
+}
+.form-page.word-cuti-form.reference-v111.density-7 .word-table td{
+    padding:.18mm .38mm;
 }
 </style></head><body>
 @php
