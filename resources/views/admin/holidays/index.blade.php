@@ -1,0 +1,8 @@
+@extends('layouts.app')
+@section('title','Kalender Hari Libur')
+@section('breadcrumb','Admin / Hari Libur')
+@section('content')
+<div class="page-header"><div><div class="eyebrow">CALENDAR / VALIDATION</div><h1>Kalender Hari Libur</h1><p class="muted">Hari libur dikecualikan dari perhitungan cuti dengan mode hari kerja.</p></div></div>
+<div class="panel form-section"><h2>Tambah Hari Libur</h2><form action="{{ route('admin.holidays.store') }}" method="POST" class="form-grid three">@csrf<label>Tanggal<input type="date" name="date" required></label><label>Nama Hari Libur<input name="name" maxlength="150" required placeholder="Contoh: Hari Libur Nasional"></label><div class="align-end"><button class="btn primary" type="submit">Tambah</button></div></form><p class="small muted">Kalender tidak ditarik otomatis dari internet. Admin wajib menginput hari libur nasional dan cuti bersama yang relevan.</p></div>
+<div class="panel"><div class="panel-head"><h2>Daftar Hari Libur</h2></div><div class="table-scroll"><table class="data-table"><thead><tr><th>Tanggal</th><th>Nama</th><th>Aksi</th></tr></thead><tbody>@forelse($holidays as $day)<tr><td>{{ $day->date->translatedFormat('d F Y') }}</td><td>{{ $day->name }}</td><td><form method="POST" action="{{ route('admin.holidays.destroy',$day) }}" onsubmit="return confirm('Hapus hari libur ini?')">@csrf @method('DELETE')<button class="btn danger sm" type="submit">Hapus</button></form></td></tr>@empty<tr><td colspan="3" class="empty">Belum ada hari libur terdaftar.</td></tr>@endforelse</tbody></table></div><div class="paginate">{{ $holidays->links() }}</div></div>
+@endsection

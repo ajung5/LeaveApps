@@ -1,0 +1,8 @@
+@extends('layouts.app')
+@section('title','Jenis Cuti')
+@section('breadcrumb','Admin / Jenis Cuti')
+@section('content')
+<div class="page-header"><div><div class="eyebrow">MASTER DATA / JENIS CUTI</div><h1>Pengaturan Jenis Cuti</h1><p class="muted">Enam kategori sesuai formulir sumber. Kode dan perlakuan saldo tidak dapat diubah sembarangan.</p></div></div>
+<div class="stack">@foreach($types as $type)<form class="panel type-form" method="POST" action="{{ route('admin.types.update',$type) }}">@csrf @method('PUT')<div><strong>{{ $type->code }}</strong><p class="muted small">{{ $type->uses_balance?'Menggunakan saldo tahunan':'Tidak menggunakan ledger saldo tahunan' }}</p></div><label>Nama Jenis<input name="name" value="{{ $type->name }}" required></label><label>Hitung Durasi<select name="count_mode"><option value="working" @selected($type->count_mode==='working')>Hari Kerja</option><option value="calendar" @selected($type->count_mode==='calendar')>Hari Kalender</option></select></label><label>Lampiran<select name="requires_attachment"><option value="0" @selected(!$type->requires_attachment)>Opsional</option><option value="1" @selected($type->requires_attachment)>Wajib</option></select></label><label>Status<select name="is_active"><option value="1" @selected($type->is_active)>Aktif</option><option value="0" @selected(!$type->is_active)>Nonaktif</option></select></label><button class="btn outline" type="submit">Simpan</button></form>@endforeach</div>
+<p class="muted small">Peraturan masing-masing jenis cuti wajib diverifikasi sebelum penggunaan operasional. Perubahan cara menghitung durasi tidak otomatis menghitung ulang permohonan historis.</p>
+@endsection
