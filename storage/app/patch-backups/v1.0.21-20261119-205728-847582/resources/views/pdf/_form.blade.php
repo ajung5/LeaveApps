@@ -1,0 +1,126 @@
+<div class="page form-page word-cuti-form reference-v111 density-{{ $density['form'] ?? 2 }}" data-reference-layout="Pratinjau_Formulir_Cuti_v1.0.11_A4">
+    <div class="header-date">{{ $settings['institution_city'] }}, {{ $writtenDate->translatedFormat('d F Y') }}</div>
+    <table class="form-addressee">
+        <tr>
+            <td width="54%"></td>
+            <td width="46%">
+                Kepada<br>
+                Yth. {{ $settings['authority_position'] }}<br>
+                di<br>
+                TEMPAT
+            </td>
+        </tr>
+    </table>
+    <div class="form-caption">FORMULIR PERMINTAAN DAN PEMBERIAN CUTI</div>
+
+    {{-- I. Mengikuti empat kolom dan sel gabungan pada dokumen Word. --}}
+    <table class="form-table tight word-table word-employee">
+        <colgroup><col style="width:16%"><col style="width:36%"><col style="width:17%"><col style="width:31%"></colgroup>
+            <tr class="word-column-guide" aria-hidden="true"><td width="16%" style="width:25.6mm"></td><td width="36%" style="width:57.6mm"></td><td width="17%" style="width:27.2mm"></td><td width="31%" style="width:49.6mm"></td></tr>
+<tr><td colspan="4" class="section-title">I. DATA PEGAWAI****</td></tr>
+        <tr><td>Nama</td><td>{{ $employee['name'] }}</td><td>NIP</td><td>{{ $employee['nip'] }}</td></tr>
+        <tr><td>Jabatan</td><td>{{ $employee['position'] }}</td><td>Masa Kerja</td><td>{{ $workAge ? $workAge->y.' TAHUN '.$workAge->m.' BULAN' : 'Belum tercatat' }}</td></tr>
+        <tr><td>Unit Kerja</td><td colspan="3">{{ $employee['unit'] }}</td></tr>
+    </table>
+
+    <table class="form-table tight word-table word-types">
+        <colgroup><col style="width:35%"><col style="width:14%"><col style="width:36%"><col style="width:15%"></colgroup>
+            <tr class="word-column-guide" aria-hidden="true"><td width="35%" style="width:56mm"></td><td width="14%" style="width:22.4mm"></td><td width="36%" style="width:57.6mm"></td><td width="15%" style="width:24mm"></td></tr>
+<tr><td colspan="4" class="section-title">II. JENIS CUTI YANG DIAMBIL****</td></tr>
+        @php
+            $choices = [
+                ['TAHUNAN', '1. Cuti Tahunan', 'BESAR', '2. Cuti Besar'],
+                ['SAKIT', '3. Cuti Sakit', 'BERSALIN', '4. Cuti Bersalin'],
+                ['PENTING', '5. Cuti Karena Alasan Penting', 'CLTN', '6. Cuti di Luar Tanggungan Negara'],
+            ];
+        @endphp
+        @foreach($choices as $choice)
+            <tr>
+                <td>{{ $choice[1] }}</td>
+                <td class="center">{{ $leave->type->code === $choice[0] ? 'X' : '' }}</td>
+                <td>{{ $choice[3] }}</td>
+                <td class="center">{{ $leave->type->code === $choice[2] ? 'X' : '' }}</td>
+            </tr>
+        @endforeach
+    </table>
+
+    <table class="form-table tight word-table word-reason">
+        <tr><td class="section-title">III. ALASAN CUTI****</td></tr>
+        <tr><td class="word-reason-text">{{ $leave->type->name }}</td></tr>
+    </table>
+
+    <table class="form-table tight word-table word-duration">
+        <colgroup><col style="width:21%"><col style="width:19%"><col style="width:16%"><col style="width:19%"><col style="width:6%"><col style="width:19%"></colgroup>
+            <tr class="word-column-guide" aria-hidden="true"><td width="21%" style="width:33.6mm"></td><td width="19%" style="width:30.4mm"></td><td width="16%" style="width:25.6mm"></td><td width="19%" style="width:30.4mm"></td><td width="6%" style="width:9.6mm"></td><td width="19%" style="width:30.4mm"></td></tr>
+<tr><td colspan="6" class="section-title">IV. LAMANYA CUTI****</td></tr>
+        <tr>
+            <td>Selama : {{ \App\Support\IndonesianNumberWords::spell((int) $leave->duration_days) }} hari</td>
+            <td class="center"><span class="word-subline">(hari/bulan/tahun)</span><br><strong>{{ $leave->duration_days }} Hari</strong></td>
+            <td>Mulai tanggal</td>
+            <td><strong>{{ $leave->start_date->translatedFormat('d F Y') }}</strong></td>
+            <td class="center">s/d</td>
+            <td><strong>{{ $leave->end_date->translatedFormat('d F Y') }}</strong></td>
+        </tr>
+    </table>
+
+    {{-- V. Catatan saldo N-2/N-1/N kiri; daftar jenis cuti lainnya kanan. --}}
+    <table class="form-table tight word-table word-history">
+        <colgroup><col style="width:12%"><col style="width:10%"><col style="width:18%"><col style="width:50%"><col style="width:10%"></colgroup>
+            <tr class="word-column-guide" aria-hidden="true"><td width="12%" style="width:19.2mm"></td><td width="10%" style="width:16mm"></td><td width="18%" style="width:28.8mm"></td><td width="50%" style="width:80mm"></td><td width="10%" style="width:16mm"></td></tr>
+<tr><td colspan="5" class="section-title">V. CATATAN CUTI***</td></tr>
+        <tr><td colspan="3">1. CUTI TAHUNAN</td><td colspan="2">2. CUTI BESAR</td></tr>
+        <tr><td>Tahun</td><td>Sisa</td><td>Keterangan</td><td colspan="2">3. CUTI SAKIT</td></tr>
+        <tr><td>N-2</td><td>{{ $balanceYears[$leave->start_date->year-2] ?? '' }}</td><td></td><td colspan="2">4. CUTI BERSALIN</td></tr>
+        <tr><td>N-1</td><td>{{ $balanceYears[$leave->start_date->year-1] ?? '' }}</td><td></td><td colspan="2">5. CUTI KARENA ALASAN PENTING</td></tr>
+        <tr><td>N</td><td>{{ $balanceYears[$leave->start_date->year] ?? '' }}</td><td></td><td colspan="2">6. CUTI DI LUAR TANGGUNGAN NEGARA</td></tr>
+    </table>
+
+    {{-- VI. Kolom alamat 48%; 52% kanan adalah area tanda tangan pemohon. --}}
+    <table class="form-table tight word-table word-address">
+        <colgroup><col style="width:48%"><col style="width:18%"><col style="width:34%"></colgroup>
+            <tr class="word-column-guide" aria-hidden="true"><td width="48%" style="width:76.8mm"></td><td width="18%" style="width:28.8mm"></td><td width="34%" style="width:54.4mm"></td></tr>
+<tr><td colspan="3" class="section-title">VI. ALAMAT SELAMA MENJALANKAN CUTI****</td></tr>
+        <tr><td></td><td>TELP</td><td>{{ $leave->contact_phone }}</td></tr>
+        <tr>
+            <td class="word-address-text">{{ $leave->leave_address }}</td>
+            <td colspan="2" class="center word-applicant-sign">
+                Hormat saya,
+                <div class="word-sign-space"></div>
+                <span class="signature-name">{{ $employee['name'] }}</span><br>
+                NIP. {{ $employee['nip'] }}
+            </td>
+        </tr>
+    </table>
+
+    {{-- VII & VIII. Judul/pilihan keputusan selebar tabel seperti Word;
+         bagian tanda tangan pejabat berada di kanan, sejajar dengan pemohon. --}}
+    <table class="form-table tight approval-table word-table word-decision" data-word-section="VII">
+        <colgroup><col style="width:14.5%"><col style="width:14.5%"><col style="width:19%"><col style="width:52%"></colgroup>
+            <tr class="word-column-guide" aria-hidden="true"><td width="14.5%" style="width:23.2mm"></td><td width="14.5%" style="width:23.2mm"></td><td width="19%" style="width:30.4mm"></td><td width="52%" style="width:83.2mm"></td></tr>
+<tr><td colspan="4" class="section-title">VII. PERTIMBANGAN ATASAN LANGSUNG**</td></tr>
+        <tr>
+            <td class="word-decision-choice">DISETUJUI**</td>
+            <td class="word-decision-choice">PERUBAHAN**</td>
+            <td class="word-decision-choice">DITANGGUHKAN*</td>
+            <td class="word-decision-choice center">TIDAK DISETUJUI****</td>
+        </tr>
+        <tr><td colspan="3" class="word-approval-empty"></td><td class="word-decision-position center">{{ $sup?->official_position ?: ($employee['supervisor_position'] ?: 'ATASAN LANGSUNG') }}</td></tr>
+        <tr><td colspan="3" class="word-approval-empty word-approval-empty-tail"></td><td class="word-decision-sign center"><div class="word-sign-space"></div><span class="signature-name">{{ $sup?->official_name ?: ($employee['supervisor_name'] ?: '..................................') }}</span><br>NIP. {{ $sup?->official_nip ?: ($employee['supervisor_nip'] ?: '..................................') }}</td></tr>
+    </table>
+
+    <table class="form-table tight approval-table word-table word-decision" data-word-section="VIII">
+        <colgroup><col style="width:14.5%"><col style="width:14.5%"><col style="width:19%"><col style="width:52%"></colgroup>
+            <tr class="word-column-guide" aria-hidden="true"><td width="14.5%" style="width:23.2mm"></td><td width="14.5%" style="width:23.2mm"></td><td width="19%" style="width:30.4mm"></td><td width="52%" style="width:83.2mm"></td></tr>
+<tr><td colspan="4" class="section-title">VIII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI****</td></tr>
+        <tr>
+            <td class="word-decision-choice">DISETUJUI**</td>
+            <td class="word-decision-choice">PERUBAHAN**</td>
+            <td class="word-decision-choice">DITANGGUHKAN**</td>
+            <td class="word-decision-choice center">TIDAK DISETUJUI**</td>
+        </tr>
+        <tr><td colspan="3" class="word-approval-empty"></td><td class="word-decision-position center">{{ $authority?->official_position ?: $settings['authority_position'] }}</td></tr>
+        <tr><td colspan="3" class="word-approval-empty word-approval-empty-tail"></td><td class="word-decision-sign center"><div class="word-sign-space"></div><span class="signature-name">{{ $authority?->official_name ?: $settings['authority_name'] }}</span><br>NIP. {{ $authority?->official_nip ?: $settings['authority_nip'] }}</td></tr>
+    </table>
+
+    <div class="docid">{{ $leave->request_number }} @if(!$isIssued) · DRAF — BELUM DITERBITKAN @endif</div>
+</div>

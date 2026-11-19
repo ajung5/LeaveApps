@@ -13,5 +13,5 @@
 <p class="text-indent">Demikian surat permohonan {{ $leave->type->name }} ini saya buat untuk digunakan sebagaimana mestinya.</p>
 </div>
 <div class="signature-block application-signature"><div>{{ $settings['institution_city'] }}, {{ $writtenDate->translatedFormat('d F Y') }}</div><div>Hormat saya,</div><div class="sig-height"></div><div class="signature-name">{{ $employee['name'] }}</div><div>NIP. {{ $employee['nip'] }}</div></div>
-<div class="docid application-docid">{{ $leave->request_number }} @if(!$isIssued) · DRAF — BELUM DITERBITKAN @endif</div>
+@if(!$isIssued)<div class="docid application-docid">DRAF — BELUM DITERBITKAN</div>@endif
 </div>

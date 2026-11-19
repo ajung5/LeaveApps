@@ -265,6 +265,47 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
   font-size:9.5pt;
 }
 
+/* CUTI-PDF v1.0.21: nomor surat disiapkan untuk ditulis manual.
+   Judul tetap di tengah; baris Nomor mulai dari tepi kiri area isi. */
+.permission-page .letter-number{
+    text-align:left!important;
+    padding-left:0!important;
+}
+/* Saldo N (tahun berjalan) dipusatkan, tahun N-1/N-2 tidak diubah. */
+.form-page.word-cuti-form .word-history .word-current-balance{
+    text-align:center!important;
+}
+/* Lima baris kosong untuk tanda tangan formulir pada density 2.
+   Jika data panjang, Dompdf dapat memilih density berikutnya untuk
+   mencegah halaman tambahan, tanpa memotong informasi. */
+.form-page.word-cuti-form .word-applicant-sign .word-sign-space,
+.form-page.word-cuti-form .word-decision td.word-decision-sign .word-sign-space{
+    height:5.2em!important;
+    min-height:5.2em!important;
+}
+.form-page.word-cuti-form.density-3 .word-applicant-sign .word-sign-space,
+.form-page.word-cuti-form.density-3 .word-decision td.word-decision-sign .word-sign-space{
+    height:5.0em!important;
+    min-height:5.0em!important;
+}
+.form-page.word-cuti-form.density-4 .word-applicant-sign .word-sign-space,
+.form-page.word-cuti-form.density-4 .word-decision td.word-decision-sign .word-sign-space{
+    height:4.6em!important;
+    min-height:4.6em!important;
+}
+.form-page.word-cuti-form.density-5 .word-applicant-sign .word-sign-space,
+.form-page.word-cuti-form.density-5 .word-decision td.word-decision-sign .word-sign-space{
+    height:4.2em!important;
+    min-height:4.2em!important;
+}
+.form-page.word-cuti-form.density-6 .word-applicant-sign .word-sign-space,
+.form-page.word-cuti-form.density-6 .word-decision td.word-decision-sign .word-sign-space,
+.form-page.word-cuti-form.density-7 .word-applicant-sign .word-sign-space,
+.form-page.word-cuti-form.density-7 .word-decision td.word-decision-sign .word-sign-space{
+    height:3.6em!important;
+    min-height:3.6em!important;
+}
+
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];

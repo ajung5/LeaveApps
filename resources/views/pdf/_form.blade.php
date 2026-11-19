@@ -72,7 +72,7 @@
         <tr><td>Tahun</td><td>Sisa</td><td>Keterangan</td><td colspan="2">3. CUTI SAKIT</td></tr>
         <tr><td>N-2</td><td>{{ $balanceYears[$leave->start_date->year-2] ?? '' }}</td><td></td><td colspan="2">4. CUTI BERSALIN</td></tr>
         <tr><td>N-1</td><td>{{ $balanceYears[$leave->start_date->year-1] ?? '' }}</td><td></td><td colspan="2">5. CUTI KARENA ALASAN PENTING</td></tr>
-        <tr><td>N</td><td>{{ $balanceYears[$leave->start_date->year] ?? '' }}</td><td></td><td colspan="2">6. CUTI DI LUAR TANGGUNGAN NEGARA</td></tr>
+        <tr><td>N</td><td class="center word-current-balance">{{ $balanceYears[$leave->start_date->year] ?? '' }}</td><td></td><td colspan="2">6. CUTI DI LUAR TANGGUNGAN NEGARA</td></tr>
     </table>
 
     {{-- VI. Kolom alamat 48%; 52% kanan adalah area tanda tangan pemohon. --}}
@@ -122,5 +122,5 @@
         <tr><td colspan="3" class="word-approval-empty word-approval-empty-tail"></td><td class="word-decision-sign center"><div class="word-sign-space"></div><span class="signature-name">{{ $authority?->official_name ?: $settings['authority_name'] }}</span><br>NIP. {{ $authority?->official_nip ?: $settings['authority_nip'] }}</td></tr>
     </table>
 
-    <div class="docid">{{ $leave->request_number }} @if(!$isIssued) · DRAF — BELUM DITERBITKAN @endif</div>
+    @if(!$isIssued)<div class="docid">DRAF — BELUM DITERBITKAN</div>@endif
 </div>
