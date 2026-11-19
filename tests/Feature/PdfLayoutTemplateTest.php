@@ -6,13 +6,13 @@ use Tests\TestCase;
 
 class PdfLayoutTemplateTest extends TestCase
 {
-    public function test_kop_surat_menggunakan_proporsi_3_4_dan_arial(): void
+    public function test_kop_surat_menggunakan_proporsi_3_4_dan_bookman(): void
     {
         $css = file_get_contents(resource_path('views/pdf/document.blade.php'));
         $this->assertStringContainsString('.letterhead-text .gov{font-size:12pt;font-weight:normal}', $css);
         $this->assertStringContainsString('.letterhead-text .agency{font-size:16pt;font-weight:bold}', $css);
-        $this->assertStringContainsString("font-family:'CutiArial',Arial,Helvetica,sans-serif", $css);
-        $this->assertStringContainsString("@font-face{font-family:'CutiArial'", $css);
+        $this->assertStringContainsString("font-family:'CutiBookman','Bookman Old Style','URW Bookman'", $css);
+        $this->assertStringContainsString("@font-face{font-family:'CutiBookman'", $css);
     }
 
     public function test_persetujuan_sejajar_area_tanda_tangan_pemohon(): void

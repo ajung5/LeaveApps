@@ -49,19 +49,15 @@ class DocumentController extends Controller
             'authority_rank' => AppSetting::read('authority_rank'),
         ];
         $logo = base64_encode(file_get_contents(public_path('assets/img/lambang-subang.jpeg')));
-        // Font Arial tidak didistribusikan bersama source code. Pada macOS
-        // font sistem dapat dipakai langsung; server lain dapat menyediakan
-        // file berlisensi pada storage/app/private/pdf-fonts/.
-        $pdfArialRegular = $pdfArialBold = null;
-        if (in_array($kind, ['permission', 'bundle'], true)) {
-            [$pdfArialRegular, $pdfArialBold] = $this->localArialFonts();
-            if (! $pdfArialRegular || ! $pdfArialBold) {
-                Log::warning('Font Arial untuk kop surat tidak ditemukan; PDF menggunakan fallback Helvetica.', [
-                    'leave_id' => $leave->getKey(),
-                ]);
-            }
+        // Bookman Old Style wajib disediakan sendiri secara sah pada server.
+        // File font tidak disertakan dalam source/patch. Digunakan untuk ketiga PDF.
+        [$pdfBookmanRegular, $pdfBookmanBold] = $this->localBookmanFonts();
+        if (! $pdfBookmanRegular || ! $pdfBookmanBold) {
+            Log::warning('Bookman Old Style belum tersedia; PDF memakai fallback serif, tidak sepenuhnya sesuai tata naskah.', [
+                'leave_id' => $leave->getKey(),
+            ]);
         }
-        $data = compact('leave', 'employee', 'settings', 'logo', 'pdfArialRegular', 'pdfArialBold');
+        $data = compact('leave', 'employee', 'settings', 'logo', 'pdfBookmanRegular', 'pdfBookmanBold');
 
         // Rendering tiap bagian secara independen memastikan bundle tidak
         // bisa dianggap benar bila salah satu surat meluber atau kosong.
@@ -107,28 +103,32 @@ class DocumentController extends Controller
     }
 
     /**
-     * Baca font Arial dari sistem / storage lokal yang sah tanpa menyalin
-     * berkas font ke dalam paket patch atau repository.
+     * Memakai Bookman Old Style yang sudah tersedia secara sah pada server.
+     * Tidak memaketkan/menyalin file font komersial dalam distribusi.
      *
      * @return array{0: ?string, 1: ?string}
      */
-    private function localArialFonts(): array
+    private function localBookmanFonts(): array
     {
         $directories = [
             storage_path('app/private/pdf-fonts'),
-            '/System/Library/Fonts/Supplemental',
             '/Library/Fonts',
+            '/System/Library/Fonts/Supplemental',
+        ];
+
+        $pairs = [
+            ['Bookman Old Style.ttf', 'Bookman Old Style Bold.ttf'],
+            ['BookmanOldStyle.ttf', 'BookmanOldStyle-Bold.ttf'],
+            ['bookos.ttf', 'bookosb.ttf'],
+            ['BOOKOS.TTF', 'BOOKOSB.TTF'],
+            ['BookmanOldStyle-Regular.ttf', 'BookmanOldStyle-Bold.ttf'],
         ];
 
         foreach ($directories as $directory) {
-            foreach ([
-                ['Arial.ttf', 'Arial Bold.ttf'],
-                ['arial.ttf', 'arialbd.ttf'],
-                ['Arial.ttf', 'Arial-Bold.ttf'],
-            ] as [$regularFile, $boldFile]) {
-                $regular = $directory.DIRECTORY_SEPARATOR.$regularFile;
-                $bold = $directory.DIRECTORY_SEPARATOR.$boldFile;
-                if (is_readable($regular) && is_readable($bold)) {
+            foreach ($pairs as [$regularName, $boldName]) {
+                $regular = $directory.DIRECTORY_SEPARATOR.$regularName;
+                $bold = $directory.DIRECTORY_SEPARATOR.$boldName;
+                if (is_file($regular) && is_readable($regular) && is_file($bold) && is_readable($bold)) {
                     return [base64_encode(file_get_contents($regular)), base64_encode(file_get_contents($bold))];
                 }
             }
@@ -138,7 +138,7 @@ class DocumentController extends Controller
     }
 
     /**
-     * Dompdf membuat berkas metrik .ufm ketika font Arial lokal diregistrasi.
+     * Dompdf membuat berkas metrik .ufm ketika font Bookman lokal diregistrasi.
      * Direktori cache harus ada dan dapat ditulis SEBELUM proses render.
      */
     private function ensurePdfFontCacheDirectory(string $directory): void
