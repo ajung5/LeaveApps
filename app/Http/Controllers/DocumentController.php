@@ -63,14 +63,19 @@ class DocumentController extends Controller
         // bisa dianggap benar bila salah satu surat meluber atau kosong.
         $parts = $kind === 'bundle' ? ['form', 'permission', 'application'] : [$kind];
         $density = ['form' => 0, 'permission' => 0, 'application' => 0];
+        // Formulir tabel boleh lebih rapat. Badan surat tetap 12 pt.
+        $maxDensity = ['form' => 5, 'permission' => 3, 'application' => 3];
 
         foreach ($parts as $part) {
             $fitted = false;
             $lastCount = null;
-            foreach ([0, 1, 2] as $level) {
+            foreach (range(0, $maxDensity[$part]) as $level) {
                 $density[$part] = $level;
                 $partPdf = $this->renderPdf($data + ['kind' => $part, 'density' => $density]);
                 $lastCount = $partPdf->getDomPDF()->getCanvas()->get_page_count();
+                Log::debug('Cek jumlah halaman PDF cuti', [
+                    'jenis' => $part, 'density' => $level, 'pages' => $lastCount,
+                ]);
                 if ($lastCount === 1) {
                     $fitted = true;
                     break;
@@ -79,7 +84,7 @@ class DocumentController extends Controller
             if (! $fitted) {
                 Log::warning('Dokumen cuti melampaui satu halaman A4', [
                     'leave_id' => $leave->getKey(), 'kind' => $part,
-                    'pages' => $lastCount, 'max_density' => 2,
+                    'pages' => $lastCount, 'max_density' => $maxDensity[$part],
                 ]);
                 abort(422, "Dokumen {$part} menghasilkan {$lastCount} halaman (harus 1). "
                     .'Periksa panjang isian alasan/alamat dan tata letak PDF. Tidak ada isi yang dipotong.');
@@ -91,6 +96,26 @@ class DocumentController extends Controller
 
         $bundlePdf = $this->renderPdf($data + ['kind' => 'bundle', 'density' => $density]);
         $bundleCount = $bundlePdf->getDomPDF()->getCanvas()->get_page_count();
+        // Dompdf menghitung ulang pagination pada gabungan. Bila terjadi
+        // overflow, padatkan setiap bagian tanpa mengubah margin/font isi surat.
+        for ($attempt = 1; $bundleCount !== 3 && $attempt <= 5; $attempt++) {
+            $changed = false;
+            foreach ($parts as $part) {
+                $next = min($maxDensity[$part], $density[$part] + 1);
+                if ($next !== $density[$part]) {
+                    $density[$part] = $next;
+                    $changed = true;
+                }
+            }
+            if (! $changed) {
+                break;
+            }
+            $bundlePdf = $this->renderPdf($data + ['kind' => 'bundle', 'density' => $density]);
+            $bundleCount = $bundlePdf->getDomPDF()->getCanvas()->get_page_count();
+            Log::debug('Cek ulang gabungan PDF cuti', [
+                'density' => $density, 'pages' => $bundleCount,
+            ]);
+        }
         if ($bundleCount !== 3) {
             Log::warning('Gabungan PDF cuti tidak tepat tiga halaman', [
                 'leave_id' => $leave->getKey(), 'pages' => $bundleCount, 'density' => $density,

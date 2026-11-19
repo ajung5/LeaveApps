@@ -48,6 +48,11 @@ class PdfA4Test extends TestCase
         $this->actingAs($user);
         foreach (['form','application','permission','bundle'] as $kind) {
             $response = $this->get(route('leaves.pdf', [$leave, $kind]));
+            if ($response->getStatusCode() !== 200) {
+                $details = trim(preg_replace('/\s+/', ' ', strip_tags($response->getContent())));
+                $this->fail("PDF jenis [{$kind}] gagal dengan HTTP {$response->getStatusCode()}. "
+                    .mb_substr($details, 0, 500));
+            }
             $response->assertOk()
                 ->assertHeader('content-type', 'application/pdf')
                 ->assertHeader('X-Cuti-Pdf-Pages', $kind === 'bundle' ? '3' : '1');

@@ -74,6 +74,31 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .letterhead-text .gov{font-size:12pt;font-weight:normal;line-height:1.0}
 .letterhead-text .agency{font-size:16pt;font-weight:bold;line-height:1.0}
 .form-page .approval-table{width:47%;margin-left:53%;table-layout:fixed;page-break-inside:avoid}
+
+/* Adaptasi khusus formulir tabel untuk mesin Dompdf.
+ * Margin A4 resmi tidak diubah, seluruh bidang tetap tercetak.
+ * Ukuran badan surat izin/permohonan tetap 12 pt. */
+.form-page.density-3 .form-table.tight td{padding:.15mm .35mm;font-size:9.75pt;line-height:1.0}
+.form-page.density-3 .form-table .section-title{padding:.18mm .35mm;font-size:9.75pt;line-height:1.0}
+.form-page.density-4 .form-table.tight td{padding:.10mm .30mm;font-size:9.1pt;line-height:1.0}
+.form-page.density-4 .form-table .section-title{padding:.12mm .30mm;font-size:9.1pt;line-height:1.0}
+.form-page.density-5 .form-table.tight td{padding:.08mm .25mm;font-size:8.5pt;line-height:1.0}
+.form-page.density-5 .form-table .section-title{padding:.10mm .25mm;font-size:8.5pt;line-height:1.0}
+.form-page.density-3 .space3,.form-page.density-4 .space3,.form-page.density-5 .space3{height:0}
+.form-page.density-3 .form-addressee,.form-page.density-4 .form-addressee,.form-page.density-5 .form-addressee{font-size:10pt;line-height:1.0}
+.form-page.density-3 .form-caption,.form-page.density-4 .form-caption,.form-page.density-5 .form-caption{font-size:10.5pt;margin:.5mm 0}
+.form-page.density-3 .sign-space,.form-page.density-4 .sign-space,.form-page.density-5 .sign-space{height:3mm}
+.form-page.density-3 .address-cell,.form-page.density-4 .address-cell,.form-page.density-5 .address-cell{height:8mm}
+.form-page.density-3 .signature-cell,.form-page.density-4 .signature-cell,.form-page.density-5 .signature-cell{height:8mm}
+.form-page.density-3 .approval-table .approval-choice,.form-page.density-4 .approval-table .approval-choice,.form-page.density-5 .approval-table .approval-choice{font-size:8pt;line-height:1.0;padding:.15mm .25mm}
+.form-page.density-3 .approval-table .approval-signature,.form-page.density-4 .approval-table .approval-signature,.form-page.density-5 .approval-table .approval-signature{font-size:8pt;line-height:1.0;padding:.15mm .25mm;height:9mm}
+.form-page.density-3 .approval-table .approval-signature .sign-space,.form-page.density-4 .approval-table .approval-signature .sign-space,.form-page.density-5 .approval-table .approval-signature .sign-space{height:2mm}
+.permission-page.density-3 .body-letter p,.application-page.density-3 .body-letter p{margin-bottom:1.5mm}
+.permission-page.density-3 .permit-title-area{margin:0 0 4mm}
+.permission-page.density-3 .letterhead{margin-bottom:6mm;min-height:26mm}
+.permission-page.density-3 .sig-height,.application-page.density-3 .sig-height{height:13mm}
+.application-page.density-3 .application-title{margin:5mm 0 7mm!important}
+.application-page.density-3 .application-signature{margin-top:6mm!important}
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];
