@@ -11,6 +11,7 @@ use App\Services\LeaveCalculator;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 
 class LeaveWorkflowTest extends TestCase
 {
@@ -19,6 +20,9 @@ class LeaveWorkflowTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // CSRF hanya dikecualikan pada feature test alur cuti ini,
+        // tidak pada aplikasi yang digunakan pengguna.
+        $this->withoutMiddleware(PreventRequestForgery::class);
         $this->seed(DatabaseSeeder::class);
     }
 

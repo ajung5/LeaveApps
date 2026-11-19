@@ -64,7 +64,7 @@ class DocumentController extends Controller
         $parts = $kind === 'bundle' ? ['form', 'permission', 'application'] : [$kind];
         $density = ['form' => 0, 'permission' => 0, 'application' => 0];
         // Formulir tabel boleh lebih rapat. Badan surat tetap 12 pt.
-        $maxDensity = ['form' => 5, 'permission' => 3, 'application' => 3];
+        $maxDensity = ['form' => 7, 'permission' => 3, 'application' => 3];
 
         foreach ($parts as $part) {
             $fitted = false;
@@ -86,8 +86,15 @@ class DocumentController extends Controller
                     'leave_id' => $leave->getKey(), 'kind' => $part,
                     'pages' => $lastCount, 'max_density' => $maxDensity[$part],
                 ]);
-                abort(422, "Dokumen {$part} menghasilkan {$lastCount} halaman (harus 1). "
-                    .'Periksa panjang isian alasan/alamat dan tata letak PDF. Tidak ada isi yang dipotong.');
+                return response(
+                    "PDF {$part} menghasilkan {$lastCount} halaman (target 1 A4); "
+                    ."density terakhir {$density[$part]}. Periksa storage/logs/laravel.log. "
+                    .'Tidak ada isi dokumen yang dipotong.',
+                    422,
+                    ['Content-Type' => 'text/plain; charset=UTF-8',
+                     'X-Cuti-Pdf-Failed-Part' => $part,
+                     'X-Cuti-Pdf-Actual-Pages' => (string) $lastCount]
+                );
             }
             if ($kind !== 'bundle') {
                 return $this->pdfResponse($partPdf, $kind, $leave, 1);
@@ -120,8 +127,14 @@ class DocumentController extends Controller
             Log::warning('Gabungan PDF cuti tidak tepat tiga halaman', [
                 'leave_id' => $leave->getKey(), 'pages' => $bundleCount, 'density' => $density,
             ]);
-            abort(422, "Bundle menghasilkan {$bundleCount} halaman (harus 3). "
-                .'Periksa template/pemisahan halaman; PDF tidak diterbitkan.');
+            return response(
+                "PDF bundle menghasilkan {$bundleCount} halaman (target 3 A4). "
+                .'Periksa template/pemisahan halaman; PDF tidak diterbitkan.',
+                422,
+                ['Content-Type' => 'text/plain; charset=UTF-8',
+                 'X-Cuti-Pdf-Failed-Part' => 'bundle',
+                 'X-Cuti-Pdf-Actual-Pages' => (string) $bundleCount]
+            );
         }
 
         return $this->pdfResponse($bundlePdf, $kind, $leave, 3);

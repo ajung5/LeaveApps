@@ -23,30 +23,21 @@ class PdfLayoutTemplateTest extends TestCase
         $this->assertStringContainsString("@font-face{font-family:'CutiBookman'", $css);
     }
 
-    public function test_persetujuan_sejajar_area_tanda_tangan_pemohon(): void
+    public function test_persetujuan_selebar_form_dan_penandatangan_di_kolom_kanan_sesuai_word(): void
     {
         $css = file_get_contents(resource_path('views/pdf/document.blade.php'));
         $form = file_get_contents(resource_path('views/pdf/_form.blade.php'));
 
-        // Layout v1.0.9: kolom kosong 53% + blok persetujuan 47%.
-        // Lebar tabel persetujuan sendiri 100% dari kolom kanannya.
-        $this->assertMatchesRegularExpression(
-            '~<table\s+class="approval-layout"\s*>\s*<tr>\s*<td\s+width="53%"\s*>\s*</td>\s*<td\s+width="47%"\s*>~',
-            $form
-        );
-        $this->assertMatchesRegularExpression(
-            '/\.form-page\s+\.approval-layout\s*\{[^}]*width\s*:\s*100%\s*;[^}]*table-layout\s*:\s*fixed/',
-            $css
-        );
-        $this->assertMatchesRegularExpression(
-            '/\.form-page\s+\.approval-table\s*\{[^}]*width\s*:\s*100%/',
-            $css
-        );
-        $this->assertSame(2, substr_count($form, 'class="form-table tight approval-table"'));
+        // File Word terbaru memiliki heading & empat opsi keputusan selebar
+        // formulir. Kolom tanda tangan pejabat terletak di 52% paling kanan,
+        // sejajar dengan kolom tanda tangan pemohon (52%).
+        $this->assertSame(2, substr_count($form, 'class="form-table tight approval-table word-table word-decision"'));
+        $this->assertSame(2, substr_count($form, 'class="word-approval-empty"'));
+        $this->assertSame(2, substr_count($form, 'class="word-decision-sign center"'));
+        $this->assertSame(2, substr_count($form, 'style="width:52%"'));
+        $this->assertStringContainsString('class="center word-applicant-sign"', $form);
         $this->assertStringContainsString('VII. PERTIMBANGAN ATASAN LANGSUNG', $form);
         $this->assertStringContainsString('VIII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI', $form);
-
-        // Pastikan formulir bagian VI dan bagian VII/VIII sejajar pada pembagian 53:47.
-        $this->assertStringContainsString('<td width="53%"><strong>Alamat</strong>', $form);
+        $this->assertStringContainsString('.form-page.word-cuti-form .approval-table{width:100%;margin-left:0;', $css);
     }
 }

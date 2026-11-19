@@ -98,6 +98,90 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .permission-page.density-3 .sig-height,.application-page.density-3 .sig-height{height:13mm}
 .application-page.density-3 .application-title{margin:5mm 0 7mm!important}
 .application-page.density-3 .application-signature{margin-top:6mm!important}
+
+/* Formulir Word Kabupaten Subang: aturan hanya untuk _form.blade.php.
+   Dokumen _permission dan _application tidak terpengaruh. */
+.form-page.word-cuti-form .form-addressee{margin:2mm 0 0;table-layout:fixed;line-height:1.05}
+.form-page.word-cuti-form .header-date{font-size:10pt}
+.form-page.word-cuti-form .form-caption{font-weight:normal;font-size:11pt;margin:2.2mm 0 3mm;text-align:center}
+.form-page.word-cuti-form .word-table{width:100%;border-collapse:collapse;margin:0 0 2.7mm;table-layout:fixed;page-break-inside:avoid}
+.form-page.word-cuti-form .word-table td{padding:.8mm .8mm;font-size:10.2pt;line-height:1.04;border:.55pt solid #222;vertical-align:top;overflow-wrap:break-word}
+.form-page.word-cuti-form .word-table .section-title{font-size:10.2pt;line-height:1.04;background:#fff;font-weight:normal;padding:.65mm .8mm}
+.form-page.word-cuti-form .word-subline{font-size:8pt;white-space:nowrap}
+.form-page.word-cuti-form .word-reason-text{min-height:5mm}
+.form-page.word-cuti-form .word-history td{padding:.45mm .7mm}
+.form-page.word-cuti-form .word-address{margin-bottom:2.7mm}
+.form-page.word-cuti-form .word-applicant-sign{height:20mm;line-height:1.06}
+.form-page.word-cuti-form .word-address-text{line-height:1.12}
+.form-page.word-cuti-form .word-sign-space{height:8mm}
+.form-page.word-cuti-form .word-decision .section-title{font-size:10.2pt;line-height:1.04}
+.form-page.word-cuti-form .word-decision td.word-decision-choice{font-size:8.4pt;line-height:1.05;padding:.8mm .4mm;white-space:normal}
+.form-page.word-cuti-form .word-decision td.word-decision-position{font-size:8.7pt;line-height:1.07;height:5.5mm}
+.form-page.word-cuti-form .word-decision td.word-decision-sign{font-size:9.1pt;line-height:1.05;height:19mm;vertical-align:bottom;padding-bottom:.65mm}
+.form-page.word-cuti-form .word-decision td.word-approval-empty{border-right:.55pt solid #222}
+.form-page.word-cuti-form .word-decision .word-sign-space{height:9mm}
+.form-page.word-cuti-form .word-decision{margin-bottom:2.7mm}
+.form-page.word-cuti-form .docid{margin-top:1mm;font-size:7pt}
+/* Penyesuaian kepadatan Dompdf bila isi panjang; struktur Word dan margin tidak berubah. */
+.form-page.word-cuti-form.density-1 .word-table{margin-bottom:2mm}
+.form-page.word-cuti-form.density-1 .word-table td{padding:.65mm .65mm;font-size:9.75pt}
+.form-page.word-cuti-form.density-1 .word-table .section-title{font-size:9.75pt}
+.form-page.word-cuti-form.density-1 .word-applicant-sign{height:18mm}
+.form-page.word-cuti-form.density-1 .word-decision td.word-decision-sign{height:17mm}
+.form-page.word-cuti-form.density-2 .word-table{margin-bottom:1.7mm}
+.form-page.word-cuti-form.density-2 .word-table td{padding:.5mm .55mm;font-size:9.25pt}
+.form-page.word-cuti-form.density-2 .word-table .section-title{font-size:9.25pt}
+.form-page.word-cuti-form.density-2 .word-applicant-sign{height:17mm}
+.form-page.word-cuti-form.density-2 .word-decision td.word-decision-sign{height:15mm}
+.form-page.word-cuti-form.density-3 .word-table{margin-bottom:1.35mm}
+.form-page.word-cuti-form.density-3 .word-table td{padding:.4mm .5mm;font-size:8.9pt}
+.form-page.word-cuti-form.density-3 .word-table .section-title{font-size:8.9pt}
+.form-page.word-cuti-form.density-3 .word-applicant-sign{height:16mm}
+.form-page.word-cuti-form.density-3 .word-decision td.word-decision-sign{height:14mm}
+.form-page.word-cuti-form.density-4 .word-table{margin-bottom:1mm}
+.form-page.word-cuti-form.density-4 .word-table td{padding:.3mm .4mm;font-size:8.6pt}
+.form-page.word-cuti-form.density-4 .word-table .section-title{font-size:8.6pt}
+.form-page.word-cuti-form.density-4 .word-applicant-sign{height:15mm}
+.form-page.word-cuti-form.density-4 .word-decision td.word-decision-sign{height:13mm}
+.form-page.word-cuti-form.density-5 .word-table{margin-bottom:.6mm}
+.form-page.word-cuti-form.density-5 .word-table td{padding:.25mm .35mm;font-size:8.3pt}
+.form-page.word-cuti-form.density-5 .word-table .section-title{font-size:8.3pt}
+.form-page.word-cuti-form.density-5 .word-applicant-sign{height:13mm}
+.form-page.word-cuti-form.density-5 .word-decision td.word-decision-sign{height:11mm}
+/* Aturan spesifik terakhir: mencegah override CSS approval versi lama. */
+.form-page.word-cuti-form .approval-table{width:100%;margin-left:0;page-break-inside:avoid}
+.form-page.word-cuti-form .word-decision td.word-decision-choice{font-size:8.4pt;line-height:1.05}
+.form-page.word-cuti-form.density-3 .word-decision td.word-decision-choice,
+.form-page.word-cuti-form.density-4 .word-decision td.word-decision-choice,
+.form-page.word-cuti-form.density-5 .word-decision td.word-decision-choice{font-size:7.7pt;line-height:1.04}
+
+/* v1.0.12: Dua sel kosong menggantikan rowspan agar Dompdf stabil ketika
+   menghitung tinggi baris pada tabel keputusan. Bentuk Word dipertahankan. */
+.form-page.word-cuti-form .word-decision td.word-approval-empty{border-bottom:0}
+.form-page.word-cuti-form .word-decision td.word-approval-empty-tail{border-top:0;border-bottom:.55pt solid #222}
+/* Penyesuaian ruang tanda tangan hanya pada layout padat; jangan ubah @page A4. */
+.form-page.word-cuti-form.density-4 .word-decision .word-sign-space{height:6mm}
+.form-page.word-cuti-form.density-5 .word-decision .word-sign-space{height:5mm}
+.form-page.word-cuti-form.density-5 .word-applicant-sign .word-sign-space{height:5mm}
+.form-page.word-cuti-form.density-5 .form-addressee{font-size:9pt;line-height:1.0}
+.form-page.word-cuti-form.density-5 .word-decision td.word-decision-position{height:4mm}
+/* Pilihan fit A4 untuk Dompdf; tidak menghilangkan satu pun bagian I-VIII. */
+.form-page.word-cuti-form.density-6 .form-addressee,.form-page.word-cuti-form.density-7 .form-addressee{font-size:8.5pt;line-height:1.0;margin:1mm 0 0}
+.form-page.word-cuti-form.density-6 .form-caption,.form-page.word-cuti-form.density-7 .form-caption{font-size:9.2pt;margin:1mm 0}
+.form-page.word-cuti-form.density-6 .header-date,.form-page.word-cuti-form.density-7 .header-date{font-size:8.5pt}
+.form-page.word-cuti-form.density-6 .word-table,.form-page.word-cuti-form.density-7 .word-table{margin-bottom:.6mm}
+.form-page.word-cuti-form.density-6 .word-table td{font-size:8.0pt;line-height:1.0;padding:.22mm .28mm}
+.form-page.word-cuti-form.density-7 .word-table td{font-size:7.65pt;line-height:1.0;padding:.18mm .25mm}
+.form-page.word-cuti-form.density-6 .word-table .section-title,.form-page.word-cuti-form.density-7 .word-table .section-title{font-size:8.0pt;line-height:1.0;padding:.20mm .25mm}
+.form-page.word-cuti-form.density-7 .word-table .section-title{font-size:7.65pt}
+.form-page.word-cuti-form.density-6 .word-applicant-sign,.form-page.word-cuti-form.density-7 .word-applicant-sign{height:12mm}
+.form-page.word-cuti-form.density-6 .word-sign-space,.form-page.word-cuti-form.density-7 .word-sign-space{height:4mm}
+.form-page.word-cuti-form.density-6 .word-decision td.word-decision-sign,.form-page.word-cuti-form.density-7 .word-decision td.word-decision-sign{font-size:7.9pt;line-height:1.0;height:10mm;vertical-align:bottom}
+.form-page.word-cuti-form.density-6 .word-decision td.word-decision-choice,.form-page.word-cuti-form.density-7 .word-decision td.word-decision-choice{font-size:7.65pt;line-height:1.0;padding:.18mm .22mm}
+.form-page.word-cuti-form.density-6 .word-decision td.word-decision-position,.form-page.word-cuti-form.density-7 .word-decision td.word-decision-position{font-size:7.9pt;line-height:1.0;height:3.5mm;padding:.18mm .2mm}
+.form-page.word-cuti-form.density-6 .word-decision .word-sign-space,.form-page.word-cuti-form.density-7 .word-decision .word-sign-space{height:4mm}
+.form-page.word-cuti-form.density-6 .word-subline,.form-page.word-cuti-form.density-7 .word-subline{font-size:7.3pt}
+
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];

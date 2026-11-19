@@ -14,10 +14,14 @@ class PdfLayoutAlignmentTest extends TestCase
         $this->assertStringContainsString('.body-letter p{margin-bottom:4mm;text-align:justify}', $css);
     }
 
-    public function test_form_persetujuan_dibungkus_dalam_layout_kanan(): void
+    public function test_form_keputusan_memiliki_empat_kolom_dan_signature_kanan(): void
     {
         $form = file_get_contents(resource_path('views/pdf/_form.blade.php'));
-        $this->assertStringContainsString('class="approval-layout"', $form);
-        $this->assertStringContainsString('class="form-table tight approval-table"', $form);
+        $this->assertStringContainsString('data-word-section="VII"', $form);
+        $this->assertStringContainsString('data-word-section="VIII"', $form);
+        $this->assertSame(2, substr_count($form, 'colspan="3" class="word-approval-empty"'));
+        $this->assertSame(2, substr_count($form, 'colspan="3" class="word-approval-empty word-approval-empty-tail"'));
+        $this->assertStringNotContainsString('rowspan="2"', $form);
+        $this->assertStringContainsString('class="center word-applicant-sign"', $form);
     }
 }
