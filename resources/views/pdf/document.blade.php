@@ -6,6 +6,11 @@
 @font-face{font-family:'CutiBookman';src:url('data:font/truetype;base64,{{ $pdfBookmanBold }}') format('truetype');font-weight:700;font-style:normal}
 @endif
 @page{size:A4 portrait;margin:20mm 20mm 20mm 30mm}
+@if($kind === 'form')
+@page{size:A4 portrait;margin:12mm 20mm 12mm 30mm}
+@elseif($kind === 'bundle')
+@page :first{margin-top:12mm;margin-bottom:12mm}
+@endif
 *{box-sizing:border-box}
 body{font-family:'CutiBookman','Bookman Old Style','URW Bookman','DejaVu Serif',serif;font-size:12pt;line-height:1.0;color:#111;margin:0}
 h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td,th{vertical-align:top;overflow-wrap:break-word}
@@ -242,6 +247,24 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
     height:3.45em!important;
     min-height:3.45em!important;
 }
+
+/* CUTI-PDF v1.0.19: formulir boleh memakai margin atas/bawah 12mm.
+ * Saat bundle, hanya halaman PERTAMA yang berbeda; surat lainnya tetap sesuai tata naskah.
+ * Lebar cetak tetap 160mm supaya panduan lebar kolom Dompdf tidak rusak. */
+.form-page.word-cuti-form.reference-v111.density-2 .word-table td{
+  font-size:10pt;line-height:1.04;
+}
+.form-page.word-cuti-form.reference-v111.density-2 .word-table .section-title{
+  font-size:10pt;line-height:1.04;
+}
+.form-page.word-cuti-form.reference-v111.density-2 .word-decision td.word-decision-choice{
+  font-size:8.8pt;
+}
+.form-page.word-cuti-form.reference-v111.density-2 .word-decision td.word-decision-position,
+.form-page.word-cuti-form.reference-v111.density-2 .word-decision td.word-decision-sign{
+  font-size:9.5pt;
+}
+
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];

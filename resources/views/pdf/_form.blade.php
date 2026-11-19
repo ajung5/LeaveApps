@@ -46,7 +46,7 @@
 
     <table class="form-table tight word-table word-reason">
         <tr><td class="section-title">III. ALASAN CUTI****</td></tr>
-        <tr><td class="word-reason-text">{{ $leave->reason }}</td></tr>
+        <tr><td class="word-reason-text">{{ $leave->type->name }}</td></tr>
     </table>
 
     <table class="form-table tight word-table word-duration">
@@ -55,11 +55,11 @@
 <tr><td colspan="6" class="section-title">IV. LAMANYA CUTI****</td></tr>
         <tr>
             <td>Selama :</td>
-            <td class="center"><span class="word-subline">(hari/bulan/tahun)</span><br>{{ $leave->duration_days }} Hari</td>
+            <td class="center"><span class="word-subline">(hari/bulan/tahun)</span><br><strong>{{ \App\Support\IndonesianNumberWords::spell((int) $leave->duration_days) }} Hari</strong></td>
             <td>Mulai tanggal</td>
-            <td>{{ $leave->start_date->translatedFormat('d F Y') }}</td>
+            <td><strong>{{ $leave->start_date->translatedFormat('d F Y') }}</strong></td>
             <td class="center">s/d</td>
-            <td>{{ $leave->end_date->translatedFormat('d F Y') }}</td>
+            <td><strong>{{ $leave->end_date->translatedFormat('d F Y') }}</strong></td>
         </tr>
     </table>
 
@@ -99,10 +99,10 @@
             <tr class="word-column-guide" aria-hidden="true"><td width="14.5%" style="width:23.2mm"></td><td width="14.5%" style="width:23.2mm"></td><td width="19%" style="width:30.4mm"></td><td width="52%" style="width:83.2mm"></td></tr>
 <tr><td colspan="4" class="section-title">VII. PERTIMBANGAN ATASAN LANGSUNG**</td></tr>
         <tr>
-            <td class="word-decision-choice">DISETUJUI**{{ $sup?->decision === 'approved' ? ' (X)' : '' }}</td>
-            <td class="word-decision-choice">PERUBAHAN**{{ $sup?->decision === 'change' ? ' (X)' : '' }}</td>
-            <td class="word-decision-choice">DITANGGUHKAN*{{ $sup?->decision === 'deferred' ? ' (X)' : '' }}</td>
-            <td class="word-decision-choice center">TIDAK DISETUJUI****{{ $sup?->decision === 'rejected' ? ' (X)' : '' }}</td>
+            <td class="word-decision-choice">DISETUJUI**</td>
+            <td class="word-decision-choice">PERUBAHAN**</td>
+            <td class="word-decision-choice">DITANGGUHKAN*</td>
+            <td class="word-decision-choice center">TIDAK DISETUJUI****</td>
         </tr>
         <tr><td colspan="3" class="word-approval-empty"></td><td class="word-decision-position center">{{ $sup?->official_position ?: ($employee['supervisor_position'] ?: 'ATASAN LANGSUNG') }}</td></tr>
         <tr><td colspan="3" class="word-approval-empty word-approval-empty-tail"></td><td class="word-decision-sign center"><div class="word-sign-space"></div><span class="signature-name">{{ $sup?->official_name ?: ($employee['supervisor_name'] ?: '..................................') }}</span><br>NIP. {{ $sup?->official_nip ?: ($employee['supervisor_nip'] ?: '..................................') }}</td></tr>
@@ -113,10 +113,10 @@
             <tr class="word-column-guide" aria-hidden="true"><td width="14.5%" style="width:23.2mm"></td><td width="14.5%" style="width:23.2mm"></td><td width="19%" style="width:30.4mm"></td><td width="52%" style="width:83.2mm"></td></tr>
 <tr><td colspan="4" class="section-title">VIII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI****</td></tr>
         <tr>
-            <td class="word-decision-choice">DISETUJUI**{{ $authority?->decision === 'approved' ? ' (X)' : '' }}</td>
-            <td class="word-decision-choice">PERUBAHAN**{{ $authority?->decision === 'change' ? ' (X)' : '' }}</td>
-            <td class="word-decision-choice">DITANGGUHKAN**{{ $authority?->decision === 'deferred' ? ' (X)' : '' }}</td>
-            <td class="word-decision-choice center">TIDAK DISETUJUI**{{ $authority?->decision === 'rejected' ? ' (X)' : '' }}</td>
+            <td class="word-decision-choice">DISETUJUI**</td>
+            <td class="word-decision-choice">PERUBAHAN**</td>
+            <td class="word-decision-choice">DITANGGUHKAN**</td>
+            <td class="word-decision-choice center">TIDAK DISETUJUI**</td>
         </tr>
         <tr><td colspan="3" class="word-approval-empty"></td><td class="word-decision-position center">{{ $authority?->official_position ?: $settings['authority_position'] }}</td></tr>
         <tr><td colspan="3" class="word-approval-empty word-approval-empty-tail"></td><td class="word-decision-sign center"><div class="word-sign-space"></div><span class="signature-name">{{ $authority?->official_name ?: $settings['authority_name'] }}</span><br>NIP. {{ $authority?->official_nip ?: $settings['authority_nip'] }}</td></tr>

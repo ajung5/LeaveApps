@@ -20,7 +20,8 @@ class PdfWordFidelityTest extends TestCase
         $this->assertStringContainsString('Kepada', $recipient);
         $this->assertStringContainsString('TEMPAT', $recipient);
         $this->assertStringContainsString('III. ALASAN CUTI', $form);
-        $this->assertStringContainsString('{{ $leave->reason }}', $form);
+        $this->assertStringContainsString('{{ $leave->type->name }}', $form);
+        $this->assertStringNotContainsString('{{ $leave->reason }}', $form);
     }
 
     public function test_surat_permohonan_tidak_mencetak_baris_alasan_tersendiri(): void
