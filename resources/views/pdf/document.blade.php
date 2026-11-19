@@ -34,7 +34,12 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 .signature-name{font-weight:bold;text-decoration:underline}
 .docid{font-size:7pt;color:#555;text-align:right;margin-top:1mm}
 /* permission and application */
-.letterhead{border-bottom:2pt solid #111;margin-bottom:8.5mm;padding-bottom:1mm;min-height:27mm}
+/* v1.0.25 - Kop naskah dinas: garis utama di atas, garis pendamping di bawah.
+   Dua elemen riil dipakai agar Dompdf tidak bergantung pada pseudo-elements. */
+.letterhead{border-bottom:0;margin-bottom:8.5mm;padding-bottom:0;min-height:27mm}
+.permission-page .letterhead-rules{clear:both;padding-top:2.3mm}
+.permission-page .letterhead-rule-primary{border-top:3pt solid #111;height:0;line-height:0;font-size:0}
+.permission-page .letterhead-rule-secondary{border-top:.85pt solid #111;height:0;margin-top:1.2mm;line-height:0;font-size:0}
 .logo{float:left;width:18mm;height:20mm;object-fit:contain;margin:0 4mm 0 0}
 .letterhead-text{text-align:center}
 .letterhead-text .gov{font-size:12pt;font-weight:normal;line-height:1.0}

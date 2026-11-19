@@ -1,5 +1,5 @@
 <div class="page permission-page density-{{ $density['permission'] ?? 0 }}">
-<div class="letterhead"><img src="data:image/jpeg;base64,{{ $logo }}" class="logo" alt="Lambang Kabupaten Subang"><div class="letterhead-text"><div class="gov">{{ $settings['government_name'] }}</div><div class="agency">{{ $settings['institution_name'] }}</div><div class="addr">{{ $settings['institution_address'] }}</div><div class="addr">{{ $settings['institution_phone'] }}</div></div></div>
+<div class="letterhead"><img src="data:image/jpeg;base64,{{ $logo }}" class="logo" alt="Lambang Kabupaten Subang"><div class="letterhead-text"><div class="gov">{{ $settings['government_name'] }}</div><div class="agency">{{ $settings['institution_name'] }}</div><div class="addr">{{ $settings['institution_address'] }}</div><div class="addr">{{ $settings['institution_phone'] }}</div></div><div class="letterhead-rules" aria-hidden="true"><div class="letterhead-rule-primary"></div><div class="letterhead-rule-secondary"></div></div></div>
 <div class="permit-title-area"><div class="letter-title">SURAT IZIN {{ mb_strtoupper($leave->type->name) }}</div><div class="letter-number">Nomor : <span class="letter-number-placeholder" aria-hidden="true">&nbsp;</span></div></div>
 <div class="body-letter">
 <p>Diberikan izin <strong>{{ $leave->type->name }}</strong> kepada pegawai:</p>
