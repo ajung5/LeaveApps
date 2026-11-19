@@ -64,6 +64,20 @@ class LeaveWorkflowTest extends TestCase
         $this->get(route('leaves.pdf',[$leave,'permission']))->assertForbidden();
     }
 
+    public function test_new_user_is_active_in_memory_but_disabled_user_is_rejected(): void
+    {
+        // Nilai default model harus sama dengan nilai default kolom database.
+        $user=User::create(['name'=>'Pegawai Baru','email'=>'new@example.test',
+            'password'=>'password-sangat-panjang','role'=>'user']);
+        $this->assertTrue($user->is_active);
+        $this->assertTrue($user->fresh()->is_active);
+
+        // Jangan mengendurkan kontrol akses untuk akun yang benar-benar dinonaktifkan.
+        $user->update(['is_active'=>false]);
+        $this->actingAs($user)->get(route('dashboard'))
+            ->assertRedirect(route('login'))->assertSessionHasErrors('email');
+    }
+
     public function test_user_cannot_view_other_users_request(): void
     {
         $owner=$this->staff();
@@ -74,6 +88,7 @@ class LeaveWorkflowTest extends TestCase
             'status'=>'submitted']);
         $other=User::create(['name'=>'Pegawai Lain','email'=>'other@example.test',
             'password'=>'password-sangat-panjang','role'=>'user']);
+        $this->assertTrue($other->is_active);
         $this->actingAs($other)->get(route('leaves.show',$leave))->assertForbidden();
     }
 
@@ -90,10 +105,13 @@ class LeaveWorkflowTest extends TestCase
         $leave->decisions()->create(['recorded_by'=>$admin->id,'stage'=>'authority','decision'=>'approved',
             'official_name'=>'Pejabat Contoh','official_position'=>'Kepala Dinas','reference'=>'REF-001',
             'decision_date'=>'2026-11-19']);
-        $this->actingAs($admin)->post(route('admin.leaves.issue',$leave))->assertRedirect();
+        $this->actingAs($admin)->post(route('admin.leaves.issue',$leave))
+            ->assertRedirect()->assertSessionHas('ok')->assertSessionHasNoErrors();
         $this->assertSame(9,$balance->fresh()->remaining_days);
         $this->assertSame('issued',$leave->fresh()->status);
         $this->actingAs($admin)->post(route('admin.leaves.issue',$leave))->assertSessionHasErrors('status');
         $this->assertSame(9,$balance->fresh()->remaining_days);
+        $this->assertSame(1,\App\Models\LeaveBalanceTransaction::where('leave_request_id',$leave->id)
+            ->where('type','usage')->count());
     }
 }

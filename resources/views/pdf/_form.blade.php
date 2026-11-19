@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page form-page density-{{ $density['form'] ?? 0 }}">
 <div class="header-date">{{ $settings['institution_city'] }}, {{ $writtenDate->translatedFormat('d F Y') }}</div>
 <table style="margin-top:3mm"><tr><td width="51%"></td><td width="49%">Kepada Yth.<br><strong>{{ $settings['authority_position'] }}</strong><br>{{ $settings['institution_name'] }}<br>di TEMPAT</td></tr></table>
 <div class="form-caption">FORMULIR PERMINTAAN DAN PEMBERIAN CUTI</div>

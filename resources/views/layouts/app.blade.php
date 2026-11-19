@@ -25,7 +25,7 @@
     <a class="nav-link {{ request()->routeIs('admin.holidays*')?'active':'' }}" href="{{ route('admin.holidays') }}"><span>▣</span> Kalender Libur</a>
     <a class="nav-link {{ request()->routeIs('admin.settings*')?'active':'' }}" href="{{ route('admin.settings') }}"><span>⚙</span> Pengaturan Instansi</a>
   @endif
-  <div class="sidebar-bottom"><span class="signal-dot"></span> Sistem Cuti · v1.0.0</div>
+  <div class="sidebar-bottom"><span class="signal-dot"></span> Sistem Cuti · v1.0.2</div>
 </aside>
 <div class="main-area">
 <header class="topbar"><div class="topbar-left">Administrasi Kepegawaian <span>/</span> @yield('breadcrumb','Dashboard')</div>

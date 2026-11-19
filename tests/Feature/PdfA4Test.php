@@ -47,7 +47,11 @@ class PdfA4Test extends TestCase
         ]);
         $this->actingAs($user);
         foreach (['form','application','permission','bundle'] as $kind) {
-            $this->get(route('leaves.pdf',[$leave,$kind]))->assertOk()->assertHeader('content-type','application/pdf');
+            $response = $this->get(route('leaves.pdf', [$leave, $kind]));
+            $response->assertOk()
+                ->assertHeader('content-type', 'application/pdf')
+                ->assertHeader('X-Cuti-Pdf-Pages', $kind === 'bundle' ? '3' : '1');
+            $this->assertStringStartsWith('%PDF-', $response->getContent(), "Output {$kind} bukan PDF valid.");
         }
     }
 }
