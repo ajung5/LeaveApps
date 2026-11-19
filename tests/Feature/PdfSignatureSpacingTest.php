@@ -18,7 +18,7 @@ class PdfSignatureSpacingTest extends TestCase
         $this->assertStringContainsString('TEMPAT', $recipient);
     }
 
-    public function test_ruang_tanda_tangan_tiga_baris_di_seluruh_dokumen(): void
+    public function test_ruang_tanda_tangan_formulir_dan_surat_memenuhi_empat_baris(): void
     {
         $css = file_get_contents(resource_path('views/pdf/document.blade.php'));
         $form = file_get_contents(resource_path('views/pdf/_form.blade.php'));
@@ -31,7 +31,8 @@ class PdfSignatureSpacingTest extends TestCase
         $this->assertStringContainsString('height:3.15em!important;', $css);
         $this->assertStringContainsString('.permission-page .signature-block .sig-height,', $css);
         $this->assertStringContainsString('.application-page .signature-block .sig-height{', $css);
-        $this->assertStringContainsString('height:3.45em!important;', $css);
+        $this->assertStringContainsString('height:20mm!important;', $css);
+        $this->assertStringContainsString('min-height:20mm!important;', $css);
         $this->assertStringContainsString('<div class="sig-height"></div>', $permission);
         $this->assertStringContainsString('<div class="sig-height"></div>', $application);
     }

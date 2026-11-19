@@ -35,7 +35,12 @@ class PdfContentV119Test extends TestCase
     public function test_surat_izin_tanpa_nomor_tercetak_dan_tanpa_footer_sistem(): void
     {
         $view = file_get_contents(resource_path('views/pdf/_permission.blade.php'));
-        $this->assertStringContainsString('<div class="letter-number">Nomor :</div>', $view);
+        // v1.0.22: blok Nomor dipusatkan sebagai satu kesatuan, tetapi isinya
+        // tetap kosong agar nomor dapat ditulis manual pada surat cetak.
+        $this->assertMatchesRegularExpression(
+            '/<div class="letter-number">\s*Nomor\s*:\s*<span class="letter-number-placeholder" aria-hidden="true">&nbsp;<\/span>\s*<\/div>/',
+            $view
+        );
         $this->assertStringNotContainsString('Nomor : {{ $leave->letter_number }}', $view);
         $this->assertStringNotContainsString('Diterbitkan melalui sistem:', $view);
         $this->assertStringContainsString('Sebelum menjalankan {{ mb_strtolower($leave->type->name) }}', $view);

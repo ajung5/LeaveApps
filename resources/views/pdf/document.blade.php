@@ -244,8 +244,9 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
 }
 .permission-page .signature-block .sig-height,
 .application-page .signature-block .sig-height{
-    height:3.45em!important;
-    min-height:3.45em!important;
+    /* 4 x (12pt x 1.15) = 19.47mm; 20mm memberi ruang >= 4 baris. */
+    height:20mm!important;
+    min-height:20mm!important;
 }
 
 /* CUTI-PDF v1.0.19: formulir boleh memakai margin atas/bawah 12mm.
@@ -315,6 +316,29 @@ h1,h2,p{margin:0}table{border-collapse:collapse;width:100%;table-layout:fixed}td
     min-height:3.6em!important;
 }
 
+
+/* v1.0.24: Ukuran isi naskah halaman 2 dan 3 tetap 12pt,
+   tanpa mengecilkan font saat mode density meningkat. Kop dikecualikan
+   karena rasio pemerintah daerah : perangkat daerah harus 12 : 16. */
+.permission-page .body-letter,
+.application-page .body-letter,
+.permission-page .body-letter p,
+.application-page .body-letter p,
+.permission-page .body-letter li,
+.application-page .body-letter li,
+.permission-page .letter-info td,
+.application-page .letter-info td,
+.permission-page .letter-title,
+.permission-page .letter-number,
+.application-page .application-title,
+.permission-page .signature-block,
+.application-page .signature-block{
+    font-size:12pt!important;
+}
+.permission-page .signature-block,
+.application-page .signature-block{
+    page-break-inside:avoid;
+}
 </style></head><body>
 @php
  $density=$density??['form'=>0,'permission'=>0,'application'=>0];
