@@ -39,7 +39,7 @@
                     <a class="nav-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}"
                         href="{{ route('admin.settings') }}"><span>⚙</span> Pengaturan Instansi</a>
                 @endif
-                <div class="sidebar-bottom"><span class="signal-dot"></span> Sistem Cuti · v1.0.10</div>
+                <div class="sidebar-bottom"><span class="signal-dot"></span> Sistem Cuti · v1.0.24</div>
             </aside>
             <div class="main-area">
                 <header class="topbar">

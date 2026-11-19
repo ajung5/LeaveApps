@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureActive
-{
-    public function handle(Request $request,Closure $next): Response
-    {
-        if (! $request->user()?->is_active) {
-            Auth::logout(); $request->session()->invalidate(); $request->session()->regenerateToken();
-            return redirect()->route('login')->withErrors(['email'=>'Akun Anda sudah dinonaktifkan.']);
+class EnsureActive {
+    public function handle(Request $request, Closure $next): Response {
+        if (!$request->user()?->is_active) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()
+                ->route('login')
+                ->withErrors(['email' => 'Akun Anda sudah dinonaktifkan.']);
         }
         return $next($request);
     }
