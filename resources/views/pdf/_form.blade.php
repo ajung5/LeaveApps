@@ -54,8 +54,8 @@
             <tr class="word-column-guide" aria-hidden="true"><td width="21%" style="width:33.6mm"></td><td width="19%" style="width:30.4mm"></td><td width="16%" style="width:25.6mm"></td><td width="19%" style="width:30.4mm"></td><td width="6%" style="width:9.6mm"></td><td width="19%" style="width:30.4mm"></td></tr>
 <tr><td colspan="6" class="section-title">IV. LAMANYA CUTI****</td></tr>
         <tr>
-            <td>Selama :</td>
-            <td class="center"><span class="word-subline">(hari/bulan/tahun)</span><br><strong>{{ \App\Support\IndonesianNumberWords::spell((int) $leave->duration_days) }} Hari</strong></td>
+            <td>Selama : {{ \App\Support\IndonesianNumberWords::spell((int) $leave->duration_days) }} hari</td>
+            <td class="center"><span class="word-subline">(hari/bulan/tahun)</span><br><strong>{{ $leave->duration_days }} Hari</strong></td>
             <td>Mulai tanggal</td>
             <td><strong>{{ $leave->start_date->translatedFormat('d F Y') }}</strong></td>
             <td class="center">s/d</td>
