@@ -70,7 +70,7 @@ class DocumentController extends Controller
         foreach ($parts as $part) {
             $fitted = false;
             $lastCount = null;
-            foreach (range(0, $maxDensity[$part]) as $level) {
+            foreach (range($part === 'form' ? 2 : 0, $maxDensity[$part]) as $level) {
                 $density[$part] = $level;
                 $partPdf = $this->renderPdf($data + ['kind' => $part, 'density' => $density]);
                 $lastCount = $partPdf->getDomPDF()->getCanvas()->get_page_count();

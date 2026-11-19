@@ -15,6 +15,7 @@ class PdfReferencePreviewTest extends TestCase
         $this->assertStringContainsString('data-reference-layout="Pratinjau_Formulir_Cuti_v1.0.11_A4"', $form);
         $this->assertStringContainsString('reference-v111 density-', $form);
         $this->assertStringContainsString("'form' => 2", $controller);
+        $this->assertStringContainsString("foreach (range(\$part === 'form' ? 2 : 0, \$maxDensity[\$part]) as \$level)", $controller);
         $this->assertStringContainsString('X-Cuti-Form-Density', $controller);
         $this->assertStringContainsString('reference-v111.density-2 .word-table td{padding:.5mm .55mm;font-size:9.25pt', $css);
         $this->assertStringContainsString('@page{size:A4 portrait;margin:20mm 20mm 20mm 30mm}', $css);
